@@ -11,7 +11,7 @@ class Freedom2:
     async def freedom2(self,ctx):
     
         #Your code will go here
-        await self.bot.say("I can do stuff!")
+        await self.bot.say(ctx)
 
 def setup(bot):
     bot.add_cog(Freedom2(bot))
