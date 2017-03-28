@@ -15,4 +15,4 @@ class Converter:
         await self.bot.say("I can do stuff!")
 
 def setup(bot):
-    bot.add_cog(Mycog(bot))
+    bot.add_cog(Converter(bot))
