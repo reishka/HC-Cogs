@@ -4,10 +4,10 @@ from decimal import Decimal
 
 class Converter:
     
-    def _to_fahrenheit(self, num:Decimal):
+    def to_fahrenheit(self, num:Decimal):
         return str((self.num*1.8+32))
     
-    def _to_celcius(self, num:Decimal):
+    def to_celcius(self, num:Decimal):
         return str((self.num - 32)*.5556)
     
     def __init__(self, bot):
@@ -17,7 +17,7 @@ class Converter:
     async def convertf(self, num:Decimal):
 
         #Your code will go here
-        await self.bot.say(_to_fahrenheit)
+        await self.bot.say(to_fahrenheit)
 
 def setup(bot):
     bot.add_cog(Converter(bot))
