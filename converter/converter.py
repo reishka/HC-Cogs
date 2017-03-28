@@ -4,13 +4,12 @@ from discord.ext import commands
 import decimal import Decimal
 
 class Converter:
-    """My custom cog that does stuff!"""
     
-    def _to_fahrenheit(self, num):
-        return str((num*1.8+32))
+    def _to_fahrenheit(self, num:Decimal):
+        return str((self.num*1.8+32))
     
-    def _to_celcius(self, num):
-        return str((num - 32)*.5556)
+    def _to_celcius(self, num:Decimal):
+        return str((self.num - 32)*.5556)
     
     def __init__(self, bot):
         self.bot = bot
