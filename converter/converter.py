@@ -10,7 +10,7 @@ class Converter:
         self.bot = bot
         
     @commands.group(pass_context=True, no_pm=True)
-    async def convert(self, ctx):
+    async def convert(self, ctx, amount:str):
         """Converter settings group command"""
         
         if ctx.invoked_subcommand is None:
