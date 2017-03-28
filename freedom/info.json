@@ -1,7 +1,7 @@
 {
     "AUTHOR" : "Perth",
     "INSTALL_MSG" : "[p]convert <unit of measure> #",
-    "NAME" : "Converter",
+    "NAME" : "Freedom",
     "SHORT" : "Convert from one meausrement to another",
     "DESCRIPTION" : "Convert from one measurement to another; HC goes international!"
 }
