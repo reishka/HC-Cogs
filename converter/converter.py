@@ -17,12 +17,12 @@ class Converter:
             await send_cmd_help(ctx)
 
     @freedom.command(name="freedom", pass_context=True)
-    async def freedom(self, ctx, amount:Decimal)
+    async def freedom(self, ctx, *, amount:Decimal)
         msg = str(amount*1.8+32)
         await self.bot.say(msg)
         
     @commie.command(name="commie", pass_context=True)
-    async def commie(self, ctx, amount:Decimal)
+    async def commie(self, ctx, *, amount:Decimal)
         msg = str((amount-32)*.5556)
         await self.bot.say(msg)
 
