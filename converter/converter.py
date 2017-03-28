@@ -17,7 +17,7 @@ class Converter:
     async def convertf(self, num:Decimal):
 
         #Your code will go here
-        self.bot.say(to_fahrenheit)
+        await self.bot.say(to_fahrenheit)
 
 def setup(bot):
     bot.add_cog(Converter(bot))
