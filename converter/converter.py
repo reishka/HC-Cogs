@@ -5,10 +5,10 @@ from decimal import Decimal
 class Converter:
     
     def to_fahrenheit(self, num:Decimal):
-        return str((self.num*1.8+32))
+        return str((num*1.8+32))
     
     def to_celcius(self, num:Decimal):
-        return str((self.num - 32)*.5556)
+        return str((num - 32)*.5556)
     
     def __init__(self, bot):
         self.bot = bot
