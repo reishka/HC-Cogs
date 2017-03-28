@@ -1,6 +1,8 @@
 import discord
 from discord.ext import commands
 
+import decimal import Decimal
+
 class Converter:
     """My custom cog that does stuff!"""
     
@@ -14,7 +16,7 @@ class Converter:
         self.bot = bot
 
     @commands.command()
-    async def convertf(self, num:dec):
+    async def convertf(self, num:Decimal):
 
         #Your code will go here
         await self.bot.say(_to_fahrenheit)
