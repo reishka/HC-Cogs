@@ -8,7 +8,7 @@ class Converter:
         self.bot = bot
 
     @commands.command()
-    async def mycom(self):
+    async def convert(self):
         """This does stuff!"""
 
         #Your code will go here
