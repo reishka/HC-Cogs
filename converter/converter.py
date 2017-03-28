@@ -17,7 +17,7 @@ class Converter:
             await send_cmd_help(ctx)
     
     @convert.command(name="freedom", pass_context=True, manage_server=False)
-    def freedom(self, *message):
+    def freedom(self, message):
         msg = str(float(message[0])*1.8+32)
         await self.bot.say(msg)
         
