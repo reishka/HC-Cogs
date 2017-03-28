@@ -8,7 +8,7 @@ class Freedom2:
         self.bot = bot
 
     @commands.command()
-    async def freedom2(self):
+    async def freedom2(self,ctx):
     
         #Your code will go here
         await self.bot.say("I can do stuff!")
