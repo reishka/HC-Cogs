@@ -1,7 +1,6 @@
 import discord
 from discord.ext import commands
-
-import decimal import Decimal
+from decimal import Decimal
 
 class Converter:
     
