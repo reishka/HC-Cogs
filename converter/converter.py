@@ -10,12 +10,12 @@ class Converter:
         self.bot = bot
         
    @commands.group(pass_context=True, no_pm=True, manage_server=False)
-   async def convert(self, ctx, amount:str):
+   async def convert(self, ctx):
         """Converter settings group command"""
         
         if ctx.invoked_subcommand is None:
             await send_cmd_help(ctx)
-
+   
    @convert.command(name="freedom", pass_context=True, manage_server=False)
    async def freedom(self, ctx, amount:str):
         msg = str(float(amount)*1.8+32)
