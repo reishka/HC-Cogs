@@ -18,7 +18,7 @@ class GeneralTrickery:
     @commands.command(pass_context=True, no_pm=False, name="trickery",
                       aliases=["trickeries"])
     async def _trickery(self, ctx: commands.Context):
-        """Doing whatever."""
+        """ Doing whatever. """
         await self.bot.say("Gotta repeat messages here")
         async for message in self.bot.logs_from("the_lounge",10):
             await self.bot.say(message.content)
