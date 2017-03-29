@@ -29,7 +29,7 @@ class Converter:
         """Convert celsius to fahrenheit"""
         await self.bot.say(str(ctx) + " in celcius units is " + str(float(ctx)*1.8+32) + " fahrenheit.")
 
-    @convert.command(name="f-f", pass_context=False)
+    @convert.command(name="f-c", pass_context=False)
     async def f(self, ctx):
         """Convert fahrenheit to celsius"""
         await self.bot.say(str(ctx) +" in fahrenheit is " + str(float(ctx)-32*.5556) + " celsius.")    
