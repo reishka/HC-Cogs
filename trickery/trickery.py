@@ -23,7 +23,7 @@ class GeneralTrickery:
         base_text1 = "# - O \n"
         base_text2 = "# - X"
         await self.bot.say("Let's get this race on!")
-        msg = await self.bot.say(text1+text2)  
+        msg = await self.bot.say(base_text1+base_text2)  
         i = 0
         length_1 = 0
         length_2 = 0
