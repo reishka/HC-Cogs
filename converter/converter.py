@@ -34,7 +34,7 @@ class Converter:
         """Convert fahrenheit to celsius"""
         await self.bot.say(str(ctx) +" in fahrenheit is " + str(float(ctx)-32*.5556) + " celsius.")    
     
-    @convert.group(name="feet", pass_context=True)
+    @convert.group(name="feet", pass_context=False)
     async def feet(self, ctx):
         """Convert feet to other measurements"""
         if ctx.invoked_subcommand is None:
