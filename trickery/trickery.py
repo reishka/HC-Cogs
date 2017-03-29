@@ -20,8 +20,8 @@ class GeneralTrickery:
     async def _trickery(self, ctx: commands.Context):
         """Doing whatever."""
 
-        text1 = "# - O \n"
-        text2 = "# - X"
+        base_text1 = "# - O \n"
+        base_text2 = "# - X"
         await self.bot.say("Let's get this race on!")
         msg = await self.bot.say(text1+text2)  
         i = 0
@@ -31,8 +31,8 @@ class GeneralTrickery:
             time.sleep(1)
             length_1 += random.randint(1,5)
             length_2 += random.randint(1,5)
-            text1 = text1.replace('-','-'*length_1)
-            text2 = text2.replace('-','-'*length_2)
+            text1 = base_text1.replace('-','-'*length_1)
+            text2 = base_text2.replace('-','-'*length_2)
             await self.bot.edit_message(msg, text1+text2)
             if len(text1) > 40:
                 await self.bot.say("Player 1 is victorious!")
