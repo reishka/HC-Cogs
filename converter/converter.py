@@ -16,8 +16,8 @@ class Converter:
             await send_cmd_help(ctx)
 
     @convert.command(name='freedom', pass_context=True)
-    async def freedom(self, ctx):
-        await self.bot.say(ctx + " in Commie units is " + str(float(ctx)*1.8+32) + " freedom units.")
+    async def freedom(self, ctx, *, str: units):
+        await self.bot.say(str + " in Commie units is " + str(float(str)*1.8+32) + " freedom units.")
 
     @convert.command(name="commie", pass_context=True)
     async def commie(self, ctx):
