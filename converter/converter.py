@@ -15,13 +15,21 @@ class Converter:
         if ctx.invoked_subcommand is None:
             await send_cmd_help(ctx)
 
-    @convert.command(name='freedom', pass_context=False)
-    async def freedom(self, ctx):
-        await self.bot.say(str(ctx) + " in Commie units is " + str(float(ctx)*1.8+32) + " freedom units.")
+    @convert.command(name='commies', pass_context=False)
+    async def commies(self, ctx):
+        await self.bot.say(str(ctx) + " in commies is " + str(float(ctx)*1.8+32) + " freedoms.")
 
-    @convert.command(name="commie", pass_context=False)
-    async def commie(self, ctx):
-        await self.bot.say(str(ctx) +" in Freedom Units is " + str(float(ctx)-32*.5556) + " commies.")
+    @convert.command(name="freedoms", pass_context=False)
+    async def freedoms(self, ctx):
+        await self.bot.say(str(ctx) +" in freedoms is " + str(float(ctx)-32*.5556) + " commies.")
 
+    @convert.command(name='f', pass_context=False)
+    async def f(self, ctx):
+        await self.bot.say(str(ctx) + " in celcius units is " + str(float(ctx)*1.8+32) + " fahrenheit.")
+
+    @convert.command(name="c", pass_context=False)
+    async def c(self, ctx):
+        await self.bot.say(str(ctx) +" in fahrenheit is " + str(float(ctx)-32*.5556) + " celsius.")    
+        
 def setup(bot):
     bot.add_cog(Converter(bot))
