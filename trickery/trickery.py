@@ -28,7 +28,7 @@ class GeneralTrickery:
         length_1 = 0
         length_2 = 0
         while i < 40: 
-            time.sleep(1)
+            asyncio.sleep(1)
             length_1 += random.randint(1,5)
             length_2 += random.randint(1,5)
             text1 = base_text1.replace('-','-'*length_1)
