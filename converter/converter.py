@@ -3,7 +3,6 @@ import pudb
 from discord.ext import commands
 from __main__ import send_cmd_help
 from decimal import Decimal
-from pudb import set_trace; set_trace()
 
 class Converter:
 
