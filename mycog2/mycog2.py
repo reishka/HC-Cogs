@@ -37,7 +37,10 @@ class Mycog2:
             soupObject = BeautifulSoup(await response.text(), 'html.parser')
         import pdb; pdb.set_trace()
         try:
-            online = 'blabla'
+            online = soupObject.find(class_='home-stats').find('li').find('strong').get_text()
+            await self.bot.say(online + ' players are playing this game at the moment')
+        except:
+            await self.bot.say("Couldn't load amount of players. No one is playing this game anymore or there's an error.")
 
 
 def setup(bot):
