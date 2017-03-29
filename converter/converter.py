@@ -59,7 +59,7 @@ class Converter:
         """Convert feet to meters"""
         await self.bot.say(str(ctx) + " meters is " + str(float(ctx)/0.3048) + " feet.")
         
-    @feet.command(name="yards", pass_context=False)
+    @meters.command(name="yards", pass_context=False)
     async def yards(self, ctx):
         """Convert meters to yards"""
         await self.bot.say(str(ctx) + " meters is " + str(float(ctx)*1.0936) + " yards.")
