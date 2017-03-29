@@ -13,9 +13,9 @@ class Converter:
     @commands.group(name="convert", pass_context=True)
     async def convert(self, ctx):
 
-     """Invoke help if there is no command"""
-     if ctx.invoked_subcommand is None:
-         await send_cmd_help(ctx)
+        """Invoke help if there is no command"""
+        if ctx.invoked_subcommand is None:
+            await send_cmd_help(ctx)
 
     @convert.command(name='freedom', pass_context=True)
     async def freedom(ctx):
