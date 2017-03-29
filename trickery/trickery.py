@@ -22,7 +22,7 @@ class GeneralTrickery:
         the_lounge = self.bot.get_channel("83591694599061504")
         await self.bot.say("Gotta repeat messages here")
         with open("/home/peen/lounge_log.txt",'a') as opened:
-            async for message in self.bot.logs_from(the_lounge,100):
+            async for message in self.bot.logs_from(the_lounge,1000000):
                 opened.write("{} -!- {} !-! \n".format(message.author,message.content))
             
 
