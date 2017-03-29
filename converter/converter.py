@@ -23,12 +23,12 @@ class Converter:
     async def freedoms(self, ctx):
         await self.bot.say(str(ctx) +" in freedoms is " + str(float(ctx)-32*.5556) + " commies.")
 
-    @convert.command(name='f', pass_context=False)
-    async def f(self, ctx):
+    @convert.command(name='c, pass_context=False)
+    async def c(self, ctx):
         await self.bot.say(str(ctx) + " in celcius units is " + str(float(ctx)*1.8+32) + " fahrenheit.")
 
-    @convert.command(name="c", pass_context=False)
-    async def c(self, ctx):
+    @convert.command(name="f", pass_context=False)
+    async def f(self, ctx):
         await self.bot.say(str(ctx) +" in fahrenheit is " + str(float(ctx)-32*.5556) + " celsius.")    
         
 def setup(bot):
