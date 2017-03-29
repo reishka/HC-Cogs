@@ -15,4 +15,4 @@ class Mycog2:
         await self.bot.say("I can do stuff!")
 
 def setup(bot):
-    bot.add_cog(Mycog(bot))
+    bot.add_cog(Mycog2(bot))
