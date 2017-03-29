@@ -31,7 +31,7 @@ class Converter:
     async def f(self, ctx):
         await self.bot.say(str(ctx) +" in fahrenheit is " + str(float(ctx)-32*.5556) + " celsius.")    
     
-    @convert.commands.group(name="meters", pass_context=True)
+    @convert.group(name="meters", pass_context=True)
     async def meters(self, ctx):
         if ctx.invoked_subcommand is None:
             await send_cmd_help(ctx)
