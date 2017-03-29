@@ -37,7 +37,7 @@ class Mycog2:
             soupObject = BeautifulSoup(await response.text(), 'html.parser')
         import pdb; pdb.set_trace()
         try:
-            online = 
+            online = 'blabla'
         #Your code will go here
         await self.bot.say("ONE PUNCH! And " + user.mention + " is out! ლ(ಠ益ಠლ)")
     
