@@ -15,7 +15,7 @@ class Converter:
             '''await send_cmd_help(ctx)'''
             await bot.say('Invalid convert parameter')
     
-    @convert.command()
+    @convert.command(pass_context=True)
     async def freedom(ctx):
         await self.bot.say(ctx + " in Commie units is " + str(float(ctx)*1.8+32) + " freedom units.")
         
