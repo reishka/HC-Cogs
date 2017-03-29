@@ -16,10 +16,12 @@ class Converter:
 
     @convert.command(name='commies', pass_context=False)
     async def commies(self, ctx):
+        """Convert commies to freedoms"""
         await self.bot.say(str(ctx) + " in commies is " + str(float(ctx)*1.8+32) + " freedoms.")
 
     @convert.command(name="freedoms", pass_context=False)
     async def freedoms(self, ctx):
+        """Convert freedoms to commies"""
         await self.bot.say(str(ctx) +" in freedoms is " + str(float(ctx)-32*.5556) + " commies.")
 
     @convert.command(name='c', pass_context=False)
