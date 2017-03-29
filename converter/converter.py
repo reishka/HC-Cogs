@@ -13,6 +13,7 @@ class Converter:
     async def convert(self, ctx):
         if ctx.invoked_subcommand is None:
             await send_cmd_help(ctx)
+            return
     
     @convert.command(name="freedom", pass_context=True)
     def _convert_freedom(self, ctx):
