@@ -30,6 +30,15 @@ class Converter:
     @convert.command(name="f", pass_context=False)
     async def f(self, ctx):
         await self.bot.say(str(ctx) +" in fahrenheit is " + str(float(ctx)-32*.5556) + " celsius.")    
-        
+    
+    @convert.command(name="meters", pass_context=True)
+    async def meters(self, ctx):
+        if ctx.invoked_subcommand is None:
+            await send_cmd_help(ctx)
+            
+    @meters.command(name="feet", pass_context=False)
+    async def feet(self, ctx):
+        await self.bot.say(str(ctx) + " feet is " + str(float(ctx)/3.2808) + " meters.")
+    
 def setup(bot):
     bot.add_cog(Converter(bot))
