@@ -9,13 +9,14 @@ class Converter:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.group(pass_context=True, no_pm=True)
-    async def convert(self, ctx):
+    @commands.group(pass_context=True)
+    async def convert(ctx):
         if ctx.invoked_subcommand is None:
-            await send_cmd_help(ctx)
+            '''await send_cmd_help(ctx)'''
+            await bot.say('Invalid convert parameter')
     
-    @convert.command(name="freedom", pass_context=True)
-    def _convert_freedom(self, ctx):
+    @convert.command()
+    def _convert_freedom(ctx):
         await self.bot.say(ctx + " in Commie units is " + str(float(ctx)*1.8+32) + " freedom units.")
         
     @convert.command(name="commie", pass_context=True)
