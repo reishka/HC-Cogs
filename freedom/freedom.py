@@ -8,10 +8,10 @@ class Freedom2:
         self.bot = bot
 
     @commands.command()
-    async def freedom2(self,ctx):
+    async def freedomUnits(self,ctx):
     
         #Your code will go here
-        await self.bot.say(float(ctx)*2)
+        await self.bot.say(ctx +" in Freedom Units is " + float(ctx)-32*.5556 + " commies.")
 
 def setup(bot):
     bot.add_cog(Freedom2(bot))
