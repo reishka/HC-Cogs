@@ -38,11 +38,6 @@ class Mycog2:
         import pdb; pdb.set_trace()
         try:
             online = 'blabla'
-        #Your code will go here
-        await self.bot.say("ONE PUNCH! And " + user.mention + " is out! ლ(ಠ益ಠლ)")
-    
-
-
 
 
 def setup(bot):
