@@ -10,21 +10,16 @@ class Converter:
         self.bot = bot
 
     @commands.group(pass_context=True, no_pm=True)
-    def convert(self, ctx):
-        """Cookie settings group command"""
-
+    async def convert(self, ctx):
         if ctx.invoked_subcommand is None:
             await send_cmd_help(ctx)
     
-    @convert.command(name="freedom", pass_context=True, manage_server=False)
-    def freedom(self, message):
-        msg = str(float(message[0])*1.8+32)
-        await self.bot.say(msg)
+    @convert.command(name="freedom", pass_context=True)
+    def _freedom(self, ctx):
+        await self.bot.say(ctx + " in Commie units is " + str(float(ctx)*1.8+32) + " freedom units.")
         
-    @convert.command()
-    async def toCommie(self,ctx):
-    
-        #Your code will go here
+    @convert.command(name="commie", pass_context=True)
+    async def _commie(self,ctx):
         await self.bot.say(ctx +" in Freedom Units is " + str(float(ctx)-32*.5556) + " commies.")
 
 def setup(bot):
