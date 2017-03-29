@@ -9,7 +9,7 @@ class Converter:
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.group(pass_context=True, no_pm=True)
+    @commands.group(name ="convert", pass_context=True, no_pm=True)
     async def convert(self, ctx):
         if ctx.invoked_subcommand is None:
             await send_cmd_help(ctx)
