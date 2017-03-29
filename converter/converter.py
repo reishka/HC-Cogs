@@ -2,7 +2,6 @@ import discord
 import pudb
 from discord.ext import commands
 from __main__ import send_cmd_help
-from decimal import Decimal
 
 class Converter:
 
@@ -17,11 +16,11 @@ class Converter:
             await send_cmd_help(ctx)
 
     @convert.command(name='freedom', pass_context=True)
-    async def freedom(ctx):
+    async def freedom(self, ctx):
         await self.bot.say(ctx + " in Commie units is " + str(float(ctx)*1.8+32) + " freedom units.")
 
     @convert.command(name="commie", pass_context=True)
-    async def commie(ctx):
+    async def commie(self, ctx):
         await self.bot.say(ctx +" in Freedom Units is " + str(float(ctx)-32*.5556) + " commies.")
 
 def setup(bot):
