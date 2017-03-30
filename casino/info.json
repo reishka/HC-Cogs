@@ -1,7 +1,7 @@
 {
     "AUTHOR" : "Perth",
     "INSTALL_MSG" : "Welcome to the casino! Use [p]x to get started!",
-    "NAME" : "casino",
+    "NAME" : "Casino",
     "SHORT" : "Casino currency and games",
     "DESCRIPTION" : "A casino with multiple gambling games and flower currency"
 }
