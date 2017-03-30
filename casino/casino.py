@@ -286,6 +286,46 @@ class Gambling:
                     user.name, self.bank.get_balance(user)))
             except NoAccount:
                 await self.bot.say("That user has no bank account.")
+                
+    @_casino.command(pass_context=True, no_pm=True)
+    async def payout(self, ctx):  
+        """Get some free flowers"""
+        author = ctx.message.author
+        server = author.server
+        id = author.id
+        if self.bank.account_exists(author):
+            if id in self.payday_register[server.id]:
+                seconds = abs(self.payday_register[server.id][
+                              id] - int(time.perf_counter()))
+                if seconds >= self.settings[server.id]["PAYDAY_TIME"]:
+                    self.bank.deposit_credits(author, self.settings[
+                                              server.id]["PAYDAY_CREDITS"])
+                    self.payday_register[server.id][
+                        id] = int(time.perf_counter())
+                    await self.bot.say(
+                        "{} Here, take some :cherry_blossom:. Enjoy! (+{}"
+                        " :cherry_blossom:!)".format(
+                            author.mention,
+                            str(self.settings[server.id]["PAYDAY_CREDITS"])))
+                else:
+                    dtime = self.display_time(
+                        self.settings[server.id]["PAYDAY_TIME"] - seconds)
+                    await self.bot.say(
+                        "{} Too soon. For your next payday you have to"
+                        " wait {}.".format(author.mention, dtime))
+            else:
+                self.payday_register[server.id][id] = int(time.perf_counter())
+                self.bank.deposit_credits(author, self.settings[
+                                          server.id]["PAYDAY_CREDITS"])
+                await self.bot.say(
+                    "{} Here, take some :cherry_blossom:. Enjoy! (+{} :cherry_blossom:!)".format(
+                        author.mention,
+                        str(self.settings[server.id]["PAYDAY_CREDITS"])))
+        else:
+            await self.bot.say("{} You need an account to receive :cherry_blossom:."
+                               " Type `{}bank register` to open one.".format(
+                                   author.mention, ctx.prefix))
+
 
     @_casino.command(pass_context=True)
     async def transfer(self, ctx, user: discord.Member, sum: int):
@@ -355,46 +395,7 @@ class Gambling:
             self.bank.wipe_bank(ctx.message.server)
             await self.bot.say("All ledgers on this server have been "
                                "deleted.")
-
-    @_casino.command(pass_context=True, no_pm=True)
-    async def payout(self, ctx):  
-        """Get some free flowers"""
-        author = ctx.message.author
-        server = author.server
-        id = author.id
-        if self.bank.account_exists(author):
-            if id in self.payday_register[server.id]:
-                seconds = abs(self.payday_register[server.id][
-                              id] - int(time.perf_counter()))
-                if seconds >= self.settings[server.id]["PAYDAY_TIME"]:
-                    self.bank.deposit_credits(author, self.settings[
-                                              server.id]["PAYDAY_CREDITS"])
-                    self.payday_register[server.id][
-                        id] = int(time.perf_counter())
-                    await self.bot.say(
-                        "{} Here, take some :cherry_blossom:. Enjoy! (+{}"
-                        " :cherry_blossom:!)".format(
-                            author.mention,
-                            str(self.settings[server.id]["PAYDAY_CREDITS"])))
-                else:
-                    dtime = self.display_time(
-                        self.settings[server.id]["PAYDAY_TIME"] - seconds)
-                    await self.bot.say(
-                        "{} Too soon. For your next payday you have to"
-                        " wait {}.".format(author.mention, dtime))
-            else:
-                self.payday_register[server.id][id] = int(time.perf_counter())
-                self.bank.deposit_credits(author, self.settings[
-                                          server.id]["PAYDAY_CREDITS"])
-                await self.bot.say(
-                    "{} Here, take some :cherry_blossom:. Enjoy! (+{} :cherry_blossom:!)".format(
-                        author.mention,
-                        str(self.settings[server.id]["PAYDAY_CREDITS"])))
-        else:
-            await self.bot.say("{} You need an account to receive :cherry_blossom:."
-                               " Type `{}bank register` to open one.".format(
-                                   author.mention, ctx.prefix))
-
+    
     @_casino.command(pass_context=True)
     async def server(self, ctx, top: int=10):
         """Prints out the server's leaderboard
