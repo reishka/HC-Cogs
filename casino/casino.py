@@ -356,7 +356,7 @@ class Casino:
             await self.bot.say("All ledgers on this server have been "
                                "deleted.")
 
-    @commands.command(pass_context=True, no_pm=True)
+    @_casino.command(pass_context=True, no_pm=True)
     async def payday(self, ctx):  # TODO
         """Get some free flowers"""
         author = ctx.message.author
@@ -395,7 +395,7 @@ class Casino:
                                " Type `{}bank register` to open one.".format(
                                    author.mention, ctx.prefix))
 
-    @commands.group(pass_context=True)
+    @_casino.group(pass_context=True)
     async def leaderboard(self, ctx):
         """Server / global leaderboard
 
@@ -403,7 +403,7 @@ class Casino:
         if ctx.invoked_subcommand is None:
             await ctx.invoke(self._server_leaderboard)
 
-    @leaderboard.command(name="server", pass_context=True)
+    @_casino.command(name="server", pass_context=True)
     async def _server_leaderboard(self, ctx, top: int=10):
         """Prints out the server's leaderboard
 
@@ -429,42 +429,6 @@ class Casino:
                 await self.bot.say(box(page, lang="py"))
         else:
             await self.bot.say("There are no accounts in the bank.")
-
-    @leaderboard.command(name="global")
-    async def _global_leaderboard(self, top: int=10):
-        """Prints out the global leaderboard
-
-        Defaults to top 10"""
-        if top < 1:
-            top = 10
-        bank_sorted = sorted(self.bank.get_all_accounts(),
-                             key=lambda x: x.balance, reverse=True)
-        unique_accounts = []
-        for acc in bank_sorted:
-            if not self.already_in_list(unique_accounts, acc):
-                unique_accounts.append(acc)
-        if len(unique_accounts) < top:
-            top = len(unique_accounts)
-        topten = unique_accounts[:top]
-        highscore = ""
-        place = 1
-        for acc in topten:
-            highscore += str(place).ljust(len(str(top)) + 1)
-            highscore += ("{} |{}| ".format(acc.name, acc.server.name)
-                          ).ljust(23 - len(str(acc.balance)))
-            highscore += str(acc.balance) + "\n"
-            place += 1
-        if highscore != "":
-            for page in pagify(highscore, shorten_by=12):
-                await self.bot.say(box(page, lang="py"))
-        else:
-            await self.bot.say("There are no accounts in the bank.")
-
-    def already_in_list(self, accounts, user):
-        for acc in accounts:
-            if user.id == acc.id:
-                return True
-        return False
 
     @commands.group(pass_context=True, no_pm=True)
     @checks.admin_or_permissions(manage_server=True)
