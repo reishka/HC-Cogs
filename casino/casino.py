@@ -498,7 +498,7 @@ class Casino:
                            "".format(credits))
         dataIO.save_json(self.file_path, self.settings)
 
-    @economyset.command(pass_context=True)
+    @casinoset.command(pass_context=True)
     async def registercredits(self, ctx, credits: int):
         """Flowers given on registering an account"""
         server = ctx.message.server
