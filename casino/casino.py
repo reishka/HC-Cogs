@@ -356,8 +356,8 @@ class Gambling:
             await self.bot.say("All ledgers on this server have been "
                                "deleted.")
 
-    @_casino.command(pass_context=True, no_pm=True)
-    async def cashin(self, ctx):  # TODO
+    @_casino.command(name="cashin", pass_context=True, no_pm=True)
+    async def _cashin(self, ctx):  # TODO
         """Get some free flowers"""
         author = ctx.message.author
         server = author.server
