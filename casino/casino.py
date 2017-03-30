@@ -225,7 +225,7 @@ class SetParser:
             raise
 
 
-class Casino:
+class Gambling:
     """Casino
 
     Get rich and have fun with imaginary currency!"""
@@ -519,4 +519,4 @@ def setup(bot):
         handler.setFormatter(logging.Formatter(
             '%(asctime)s %(message)s', datefmt="[%d/%m/%Y %H:%M]"))
         logger.addHandler(handler)
-    bot.add_cog(Casino(bot))
+    bot.add_cog(Gambling(bot))
