@@ -314,9 +314,9 @@ class Gambling:
         Passing positive and negative values will add/remove flowers instead
 
         Examples:
-            bank set @Twentysix 26 - Sets 26 flowers
-            bank set @Twentysix +2 - Adds 2 flowers
-            bank set @Twentysix -6 - Removes 6 flowers"""
+            casino set @Red 26 - Sets 26 flowers
+            casino set @Red +2 - Adds 2 flowers
+            casino set @Red -6 - Removes 6 flowers"""
         author = ctx.message.author
         try:
             if credits.operation == "deposit":
@@ -357,7 +357,7 @@ class Gambling:
                                "deleted.")
 
     @_casino.command(pass_context=True, no_pm=True)
-    async def payday(self, ctx):  # TODO
+    async def cashin(self, ctx):  # TODO
         """Get some free flowers"""
         author = ctx.message.author
         server = author.server
