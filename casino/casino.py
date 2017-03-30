@@ -14,8 +14,7 @@ import logging
 import random
 
 default_settings = {"PAYDAY_TIME": 300, "PAYDAY_CREDITS": 120,
-                    "SLOT_MIN": 5, "SLOT_MAX": 100, "SLOT_TIME": 0,
-                    "REGISTER_CREDITS": 0}
+                    "REGISTER_CREDITS": 100}
 
 
 class EconomyError(Exception):
@@ -56,67 +55,13 @@ class SameSenderAndReceiver(BankError):
 
 NUM_ENC = "\N{COMBINING ENCLOSING KEYCAP}"
 
-
-class SMReel(Enum):
-    cherries  = "\N{CHERRIES}"
-    cookie    = "\N{COOKIE}"
-    two       = "\N{DIGIT TWO}" + NUM_ENC
-    flc       = "\N{FOUR LEAF CLOVER}"
-    cyclone   = "\N{CYCLONE}"
-    sunflower = "\N{SUNFLOWER}"
-    six       = "\N{DIGIT SIX}" + NUM_ENC
-    mushroom  = "\N{MUSHROOM}"
-    heart     = "\N{HEAVY BLACK HEART}"
-    snowflake = "\N{SNOWFLAKE}"
-
-PAYOUTS = {
-    (SMReel.two, SMReel.two, SMReel.six) : {
-        "payout" : lambda x: x * 2500 + x,
-        "phrase" : "JACKPOT! 226! Your bid has been multiplied * 2500!"
-    },
-    (SMReel.flc, SMReel.flc, SMReel.flc) : {
-        "payout" : lambda x: x + 1000,
-        "phrase" : "4LC! +1000!"
-    },
-    (SMReel.cherries, SMReel.cherries, SMReel.cherries) : {
-        "payout" : lambda x: x + 800,
-        "phrase" : "Three cherries! +800!"
-    },
-    (SMReel.two, SMReel.six) : {
-        "payout" : lambda x: x * 4 + x,
-        "phrase" : "2 6! Your bid has been multiplied * 4!"
-    },
-    (SMReel.cherries, SMReel.cherries) : {
-        "payout" : lambda x: x * 3 + x,
-        "phrase" : "Two cherries! Your bid has been multiplied * 3!"
-    },
-    "3 symbols" : {
-        "payout" : lambda x: x + 500,
-        "phrase" : "Three symbols! +500!"
-    },
-    "2 symbols" : {
-        "payout" : lambda x: x * 2 + x,
-        "phrase" : "Two consecutive symbols! Your bid has been multiplied * 2!"
-    },
-}
-
-SLOT_PAYOUTS_MSG = ("Slot machine payouts:\n"
-                    "{two.value} {two.value} {six.value} Bet * 2500\n"
-                    "{flc.value} {flc.value} {flc.value} +1000\n"
-                    "{cherries.value} {cherries.value} {cherries.value} +800\n"
-                    "{two.value} {six.value} Bet * 4\n"
-                    "{cherries.value} {cherries.value} Bet * 3\n\n"
-                    "Three symbols: +500\n"
-                    "Two symbols: Bet * 2".format(**SMReel.__dict__))
-
-
 class Bank:
 
     def __init__(self, bot, file_path):
         self.accounts = dataIO.load_json(file_path)
         self.bot = bot
 
-    def create_account(self, user, *, initial_balance=0):
+    def create_account(self, user, *, initial_balance=100):
         server = user.server
         if not self.account_exists(user):
             if server.id not in self.accounts:
@@ -248,7 +193,7 @@ class Bank:
         return Account(**account)
 
     def _save_bank(self):
-        dataIO.save_json("data/economy/bank.json", self.accounts)
+        dataIO.save_json("data/casino/bank.json", self.accounts)
 
     def _get_account(self, user):
         server = user.server
@@ -280,16 +225,16 @@ class SetParser:
             raise
 
 
-class Economy:
-    """Economy
+class Casino:
+    """Casino
 
     Get rich and have fun with imaginary currency!"""
 
     def __init__(self, bot):
         global default_settings
         self.bot = bot
-        self.bank = Bank(bot, "data/economy/bank.json")
-        self.file_path = "data/economy/settings.json"
+        self.bank = Bank(bot, "data/casino/bank.json")
+        self.file_path = "data/casino/settings.json"
         self.settings = dataIO.load_json(self.file_path)
         if "PAYDAY_TIME" in self.settings:  # old format
             default_settings = self.settings
@@ -298,15 +243,15 @@ class Economy:
         self.payday_register = defaultdict(dict)
         self.slot_register = defaultdict(dict)
 
-    @commands.group(name="bank", pass_context=True)
-    async def _bank(self, ctx):
-        """Bank operations"""
+    @commands.group(name="casino", pass_context=True)
+    async def _casino(self, ctx):
+        """Casino operations"""
         if ctx.invoked_subcommand is None:
             await send_cmd_help(ctx)
 
-    @_bank.command(pass_context=True, no_pm=True)
+    @_casino.command(pass_context=True, no_pm=True)
     async def register(self, ctx):
-        """Registers an account at the Twentysix bank"""
+        """Opens a ledger at the casino"""
         settings = self.settings[ctx.message.server.id]
         author = ctx.message.author
         credits = 0
@@ -314,13 +259,13 @@ class Economy:
             credits = settings.get("REGISTER_CREDITS", 0)
         try:
             account = self.bank.create_account(author, initial_balance=credits)
-            await self.bot.say("{} Account opened. Current balance: {}"
+            await self.bot.say("{} Ledger opened. Current balance: {}"
                                "".format(author.mention, account.balance))
         except AccountAlreadyExists:
-            await self.bot.say("{} You already have an account at the"
-                               " Twentysix bank.".format(author.mention))
+            await self.bot.say("{} You already have a ledger at the"
+                               " casino.".format(author.mention))
 
-    @_bank.command(pass_context=True)
+    @_casino.command(pass_context=True)
     async def balance(self, ctx, user: discord.Member=None):
         """Shows balance of user.
 
@@ -331,8 +276,8 @@ class Economy:
                 await self.bot.say("{} Your balance is: {}".format(
                     user.mention, self.bank.get_balance(user)))
             except NoAccount:
-                await self.bot.say("{} You don't have an account at the"
-                                   " Twentysix bank. Type `{}bank register`"
+                await self.bot.say("{} You don't have a ledger at the"
+                                   " casino. Type `{}casino register`"
                                    " to open one.".format(user.mention,
                                                           ctx.prefix))
         else:
@@ -342,78 +287,78 @@ class Economy:
             except NoAccount:
                 await self.bot.say("That user has no bank account.")
 
-    @_bank.command(pass_context=True)
+    @_casino.command(pass_context=True)
     async def transfer(self, ctx, user: discord.Member, sum: int):
-        """Transfer credits to other users"""
+        """Transfer flowers to other users"""
         author = ctx.message.author
         try:
             self.bank.transfer_credits(author, user, sum)
             logger.info("{}({}) transferred {} credits to {}({})".format(
                 author.name, author.id, sum, user.name, user.id))
-            await self.bot.say("{} credits have been transferred to {}'s"
+            await self.bot.say("{} :cherry_blossom: have been transferred to {}'s"
                                " account.".format(sum, user.name))
         except NegativeValue:
-            await self.bot.say("You need to transfer at least 1 credit.")
+            await self.bot.say("You need to transfer at least 1 :cherry_blossom:.")
         except SameSenderAndReceiver:
-            await self.bot.say("You can't transfer credits to yourself.")
+            await self.bot.say("You can't transfer :cherry_blossom: to yourself.")
         except InsufficientBalance:
-            await self.bot.say("You don't have that sum in your bank account.")
+            await self.bot.say("You don't have that sum in your ledger.")
         except NoAccount:
-            await self.bot.say("That user has no bank account.")
+            await self.bot.say("That user has no ledger.")
 
-    @_bank.command(name="set", pass_context=True)
+    @_casino.command(name="set", pass_context=True)
     @checks.admin_or_permissions(manage_server=True)
     async def _set(self, ctx, user: discord.Member, credits: SetParser):
-        """Sets credits of user's bank account. See help for more operations
+        """Sets flowers of user's bank account. See help for more operations
 
-        Passing positive and negative values will add/remove credits instead
+        Passing positive and negative values will add/remove flowers instead
 
         Examples:
-            bank set @Twentysix 26 - Sets 26 credits
-            bank set @Twentysix +2 - Adds 2 credits
-            bank set @Twentysix -6 - Removes 6 credits"""
+            bank set @Twentysix 26 - Sets 26 flowers
+            bank set @Twentysix +2 - Adds 2 flowers
+            bank set @Twentysix -6 - Removes 6 flowers"""
         author = ctx.message.author
         try:
             if credits.operation == "deposit":
                 self.bank.deposit_credits(user, credits.sum)
                 logger.info("{}({}) added {} credits to {} ({})".format(
                     author.name, author.id, credits.sum, user.name, user.id))
-                await self.bot.say("{} credits have been added to {}"
+                await self.bot.say("{} :cherry_blossom: have been added to {}"
                                    "".format(credits.sum, user.name))
             elif credits.operation == "withdraw":
                 self.bank.withdraw_credits(user, credits.sum)
-                logger.info("{}({}) removed {} credits to {} ({})".format(
+                logger.info("{}({}) removed {} :cherry_blossom: to {} ({})".format(
                     author.name, author.id, credits.sum, user.name, user.id))
-                await self.bot.say("{} credits have been withdrawn from {}"
+                await self.bot.say("{} :cherry_blossom: have been withdrawn from {}"
                                    "".format(credits.sum, user.name))
             elif credits.operation == "set":
                 self.bank.set_credits(user, credits.sum)
-                logger.info("{}({}) set {} credits to {} ({})"
+                logger.info("{}({}) set {} :cherry_blossom: to {} ({})"
                             "".format(author.name, author.id, credits.sum,
                                       user.name, user.id))
-                await self.bot.say("{}'s credits have been set to {}".format(
+                await self.bot.say("{}'s :cherry_blossom: have been set to {}".format(
                     user.name, credits.sum))
         except InsufficientBalance:
-            await self.bot.say("User doesn't have enough credits.")
+            await self.bot.say("User doesn't have enough :cherry_blossom:.")
         except NoAccount:
-            await self.bot.say("User has no bank account.")
+            await self.bot.say("User has no ledger.")
 
-    @_bank.command(pass_context=True, no_pm=True)
+    @_casino.command(pass_context=True, no_pm=True)
     @checks.serverowner_or_permissions(administrator=True)
     async def reset(self, ctx, confirmation: bool=False):
         """Deletes all server's bank accounts"""
         if confirmation is False:
-            await self.bot.say("This will delete all bank accounts on "
+            await self.bot.say("This will delete all ledger accounts on "
                                "this server.\nIf you're sure, type "
                                "{}bank reset yes".format(ctx.prefix))
         else:
             self.bank.wipe_bank(ctx.message.server)
-            await self.bot.say("All bank accounts of this server have been "
+            await self.bot.say("All ledgers on this server have been "
                                "deleted.")
 
     @commands.command(pass_context=True, no_pm=True)
     async def payday(self, ctx):  # TODO
-        """Get some free credits"""
+        """Get some free flowers"""
         author = ctx.message.author
         server = author.server
         id = author.id
@@ -427,8 +372,8 @@ class Economy:
                     self.payday_register[server.id][
                         id] = int(time.perf_counter())
                     await self.bot.say(
-                        "{} Here, take some credits. Enjoy! (+{}"
-                        " credits!)".format(
+                        "{} Here, take some :cherry_blossom:. Enjoy! (+{}"
+                        " :cherry_blossom:!)".format(
                             author.mention,
                             str(self.settings[server.id]["PAYDAY_CREDITS"])))
                 else:
@@ -442,11 +387,11 @@ class Economy:
                 self.bank.deposit_credits(author, self.settings[
                                           server.id]["PAYDAY_CREDITS"])
                 await self.bot.say(
-                    "{} Here, take some credits. Enjoy! (+{} credits!)".format(
+                    "{} Here, take some :cherry_blossom:. Enjoy! (+{} :cherry_blossom:!)".format(
                         author.mention,
                         str(self.settings[server.id]["PAYDAY_CREDITS"])))
         else:
-            await self.bot.say("{} You need an account to receive credits."
+            await self.bot.say("{} You need an account to receive :cherry_blossom:."
                                " Type `{}bank register` to open one.".format(
                                    author.mention, ctx.prefix))
 
@@ -521,99 +466,10 @@ class Economy:
                 return True
         return False
 
-    @commands.command()
-    async def payouts(self):
-        """Shows slot machine payouts"""
-        await self.bot.whisper(SLOT_PAYOUTS_MSG)
-
-    @commands.command(pass_context=True, no_pm=True)
-    async def slot(self, ctx, bid: int):
-        """Play the slot machine"""
-        author = ctx.message.author
-        server = author.server
-        settings = self.settings[server.id]
-        valid_bid = settings["SLOT_MIN"] <= bid and bid <= settings["SLOT_MAX"]
-        slot_time = settings["SLOT_TIME"]
-        last_slot = self.slot_register.get(author.id)
-        now = datetime.utcnow()
-        try:
-            if last_slot:
-                if (now - last_slot).seconds < slot_time:
-                    raise OnCooldown()
-            if not valid_bid:
-                raise InvalidBid()
-            if not self.bank.can_spend(author, bid):
-                raise InsufficientBalance
-            await self.slot_machine(author, bid)
-        except NoAccount:
-            await self.bot.say("{} You need an account to use the slot "
-                               "machine. Type `{}bank register` to open one."
-                               "".format(author.mention, ctx.prefix))
-        except InsufficientBalance:
-            await self.bot.say("{} You need an account with enough funds to "
-                               "play the slot machine.".format(author.mention))
-        except OnCooldown:
-            await self.bot.say("Slot machine is still cooling off! Wait {} "
-                               "seconds between each pull".format(slot_time))
-        except InvalidBid:
-            await self.bot.say("Bid must be between {} and {}."
-                               "".format(settings["SLOT_MIN"],
-                                         settings["SLOT_MAX"]))
-
-    async def slot_machine(self, author, bid):
-        default_reel = deque(SMReel)
-        reels = []
-        self.slot_register[author.id] = datetime.utcnow()
-        for i in range(3):
-            default_reel.rotate(random.randint(-999, 999)) # weeeeee
-            new_reel = deque(default_reel, maxlen=3) # we need only 3 symbols
-            reels.append(new_reel)                   # for each reel
-        rows = ((reels[0][0], reels[1][0], reels[2][0]),
-                (reels[0][1], reels[1][1], reels[2][1]),
-                (reels[0][2], reels[1][2], reels[2][2]))
-
-        slot = "~~\n~~" # Mobile friendly
-        for i, row in enumerate(rows): # Let's build the slot to show
-            sign = "  "
-            if i == 1:
-                sign = ">"
-            slot += "{}{} {} {}\n".format(sign, *[c.value for c in row])
-
-        payout = PAYOUTS.get(rows[1])
-        if not payout:
-            # Checks for two-consecutive-symbols special rewards
-            payout = PAYOUTS.get((rows[1][0], rows[1][1]),
-                     PAYOUTS.get((rows[1][1], rows[1][2]))
-                                )
-        if not payout:
-            # Still nothing. Let's check for 3 generic same symbols
-            # or 2 consecutive symbols
-            has_three = rows[1][0] == rows[1][1] == rows[1][2]
-            has_two = (rows[1][0] == rows[1][1]) or (rows[1][1] == rows[1][2])
-            if has_three:
-                payout = PAYOUTS["3 symbols"]
-            elif has_two:
-                payout = PAYOUTS["2 symbols"]
-
-        if payout:
-            then = self.bank.get_balance(author)
-            pay = payout["payout"](bid)
-            now = then - bid + pay
-            self.bank.set_credits(author, now)
-            await self.bot.say("{}\n{} {}\n\nYour bid: {}\n{} → {}!"
-                               "".format(slot, author.mention,
-                                         payout["phrase"], bid, then, now))
-        else:
-            then = self.bank.get_balance(author)
-            self.bank.withdraw_credits(author, bid)
-            now = then - bid
-            await self.bot.say("{}\n{} Nothing!\nYour bid: {}\n{} → {}!"
-                               "".format(slot, author.mention, bid, then, now))
-
     @commands.group(pass_context=True, no_pm=True)
     @checks.admin_or_permissions(manage_server=True)
-    async def economyset(self, ctx):
-        """Changes economy module settings"""
+    async def casinoset(self, ctx):
+        """Changes casino module settings"""
         server = ctx.message.server
         settings = self.settings[server.id]
         if ctx.invoked_subcommand is None:
@@ -624,31 +480,7 @@ class Economy:
             await send_cmd_help(ctx)
             await self.bot.say(msg)
 
-    @economyset.command(pass_context=True)
-    async def slotmin(self, ctx, bid: int):
-        """Minimum slot machine bid"""
-        server = ctx.message.server
-        self.settings[server.id]["SLOT_MIN"] = bid
-        await self.bot.say("Minimum bid is now {} credits.".format(bid))
-        dataIO.save_json(self.file_path, self.settings)
-
-    @economyset.command(pass_context=True)
-    async def slotmax(self, ctx, bid: int):
-        """Maximum slot machine bid"""
-        server = ctx.message.server
-        self.settings[server.id]["SLOT_MAX"] = bid
-        await self.bot.say("Maximum bid is now {} credits.".format(bid))
-        dataIO.save_json(self.file_path, self.settings)
-
-    @economyset.command(pass_context=True)
-    async def slottime(self, ctx, seconds: int):
-        """Seconds between each slots use"""
-        server = ctx.message.server
-        self.settings[server.id]["SLOT_TIME"] = seconds
-        await self.bot.say("Cooldown is now {} seconds.".format(seconds))
-        dataIO.save_json(self.file_path, self.settings)
-
-    @economyset.command(pass_context=True)
+    @casinoset.command(pass_context=True)
     async def paydaytime(self, ctx, seconds: int):
         """Seconds between each payday"""
         server = ctx.message.server
@@ -657,23 +489,23 @@ class Economy:
                            "between each payday.".format(seconds))
         dataIO.save_json(self.file_path, self.settings)
 
-    @economyset.command(pass_context=True)
+    @casinoset.command(pass_context=True)
     async def paydaycredits(self, ctx, credits: int):
-        """Credits earned each payday"""
+        """Flowers earned each payday"""
         server = ctx.message.server
         self.settings[server.id]["PAYDAY_CREDITS"] = credits
-        await self.bot.say("Every payday will now give {} credits."
+        await self.bot.say("Every payday will now give {} :cherry_blossom:."
                            "".format(credits))
         dataIO.save_json(self.file_path, self.settings)
 
     @economyset.command(pass_context=True)
     async def registercredits(self, ctx, credits: int):
-        """Credits given on registering an account"""
+        """Flowers given on registering an account"""
         server = ctx.message.server
         if credits < 0:
             credits = 0
         self.settings[server.id]["REGISTER_CREDITS"] = credits
-        await self.bot.say("Registering an account will now give {} credits."
+        await self.bot.say("Registering an account will now give {} :cherry_blossom:."
                            "".format(credits))
         dataIO.save_json(self.file_path, self.settings)
 
@@ -700,19 +532,19 @@ class Economy:
 
 
 def check_folders():
-    if not os.path.exists("data/economy"):
-        print("Creating data/economy folder...")
-        os.makedirs("data/economy")
+    if not os.path.exists("data/casino"):
+        print("Creating data/casino folder...")
+        os.makedirs("data/casino")
 
 
 def check_files():
 
-    f = "data/economy/settings.json"
+    f = "data/casino/settings.json"
     if not dataIO.is_valid_json(f):
-        print("Creating default economy's settings.json...")
+        print("Creating default casino's settings.json...")
         dataIO.save_json(f, {})
 
-    f = "data/economy/bank.json"
+    f = "data/casino/bank.json"
     if not dataIO.is_valid_json(f):
         print("Creating empty bank.json...")
         dataIO.save_json(f, {})
@@ -722,13 +554,13 @@ def setup(bot):
     global logger
     check_folders()
     check_files()
-    logger = logging.getLogger("red.economy")
+    logger = logging.getLogger("red.casino")
     if logger.level == 0:
         # Prevents the logger from being loaded again in case of module reload
         logger.setLevel(logging.INFO)
         handler = logging.FileHandler(
-            filename='data/economy/economy.log', encoding='utf-8', mode='a')
+            filename='data/casino/casino.log', encoding='utf-8', mode='a')
         handler.setFormatter(logging.Formatter(
             '%(asctime)s %(message)s', datefmt="[%d/%m/%Y %H:%M]"))
         logger.addHandler(handler)
-    bot.add_cog(Economy(bot))
+    bot.add_cog(Casino(bot))
