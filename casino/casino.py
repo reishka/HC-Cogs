@@ -55,7 +55,7 @@ class SameSenderAndReceiver(BankError):
 
 NUM_ENC = "\N{COMBINING ENCLOSING KEYCAP}"
 
-class Casino:
+class Bank:
 
     def __init__(self, bot, file_path):
         self.accounts = dataIO.load_json(file_path)
@@ -225,7 +225,7 @@ class SetParser:
             raise
 
 
-class Gamble:
+class Casino:
     """Casino
 
     Get rich and have fun with imaginary currency!"""
@@ -422,7 +422,7 @@ class Gamble:
         else:
             await self.bot.say("There are no accounts in the bank.")
 
-    @commands.group(pass_context=True, no_pm=True)
+    @_casino.group(pass_context=True, no_pm=True)
     @checks.admin_or_permissions(manage_server=True)
     async def casinoset(self, ctx):
         """Changes casino module settings"""
