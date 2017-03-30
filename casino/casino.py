@@ -55,7 +55,7 @@ class SameSenderAndReceiver(BankError):
 
 NUM_ENC = "\N{COMBINING ENCLOSING KEYCAP}"
 
-class Bank:
+class Casino:
 
     def __init__(self, bot, file_path):
         self.accounts = dataIO.load_json(file_path)
@@ -225,7 +225,7 @@ class SetParser:
             raise
 
 
-class Casino:
+class Gamble:
     """Casino
 
     Get rich and have fun with imaginary currency!"""
