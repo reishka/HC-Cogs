@@ -395,16 +395,8 @@ class Casino:
                                " Type `{}bank register` to open one.".format(
                                    author.mention, ctx.prefix))
 
-    @_casino.group(pass_context=True)
-    async def leaderboard(self, ctx):
-        """Server / global leaderboard
-
-        Defaults to server"""
-        if ctx.invoked_subcommand is None:
-            await ctx.invoke(self._server_leaderboard)
-
     @_casino.command(name="server", pass_context=True)
-    async def _server_leaderboard(self, ctx, top: int=10):
+    async def server(self, ctx, top: int=10):
         """Prints out the server's leaderboard
 
         Defaults to top 10"""
