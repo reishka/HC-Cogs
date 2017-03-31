@@ -13,8 +13,8 @@ import time
 import logging
 import random
 
-default_settings = {"PAYDAY_TIME": 300, "PAYDAY_CREDITS": 120,
-                    "REGISTER_CREDITS": 0}
+default_settings = {"PAYOUT_TIME": 300, "PAYOUT_FLOWERS": 120,
+                    "REGISTER_FLOWERS": 0}
 
 
 class EconomyError(Exception):
@@ -360,35 +360,35 @@ class Gambling:
             if id in self.payday_register[server.id]:
                 seconds = abs(self.payday_register[server.id][
                               id] - int(time.perf_counter()))
-                if seconds >= self.settings[server.id]["PAYDAY_TIME"]:
+                if seconds >= self.settings[server.id]["PAYOUT_TIME"]:
                     self.bank.deposit_credits(author, self.settings[
-                                              server.id]["PAYDAY_CREDITS"])
+                                              server.id]["PAYOUT_CREDITS"])
                     self.payday_register[server.id][
                         id] = int(time.perf_counter())
                     await self.bot.say(
                         "{} :cherry_blossom: +{} :cherry_blossom: :cherry_blossom: :regional_indicator_p: :a: :regional_indicator_y: :o2: "
-                        ":regional_indicator_u: :regional_indicator_t: :cherry_blossom: :cherry_blossom: +{}"
+                        ":regional_indicator_u: :regional_indicator_t: :cherry_blossom: :cherry_blossom: +{} "
                         ":cherry_blossom:".format(
                             author.mention,
-                            str(self.settings[server.id]["PAYDAY_CREDITS"]),
-                            str(self.settings[server.id]["PAYDAY_CREDITS"])))
+                            str(self.settings[server.id]["PAYOUT_CREDITS"]),
+                            str(self.settings[server.id]["PAYOUT_CREDITS"])))
                 else:
                     dtime = self.display_time(
-                        self.settings[server.id]["PAYDAY_TIME"] - seconds)
+                        self.settings[server.id]["PAYOUT_TIME"] - seconds)
                     await self.bot.say(
                         "{} Too soon. For your next payout you have to"
                         " wait {}.".format(author.mention, dtime))
             else:
                 self.payday_register[server.id][id] = int(time.perf_counter())
                 self.bank.deposit_credits(author, self.settings[
-                                          server.id]["PAYDAY_CREDITS"])
+                                          server.id]["PAYOUT_CREDITS"])
                 await self.bot.say(
                     "{} :cherry_blossom: +{} :cherry_blossom: :cherry_blossom: :regional_indicator_p: :a: :regional_indicator_y: :o2: "
-                    ":regional_indicator_u: :regional_indicator_t: :cherry_blossom: :cherry_blossom: +{}"
+                    ":regional_indicator_u: :regional_indicator_t: :cherry_blossom: :cherry_blossom: +{} "
                     ":cherry_blossom:".format(
                         author.mention,
-                        str(self.settings[server.id]["PAYDAY_CREDITS"]),
-                        str(self.settings[server.id]["PAYDAY_CREDITS"])))
+                        str(self.settings[server.id]["PAYOUT_CREDITS"]),
+                        str(self.settings[server.id]["PAYOUT_CREDITS"])))
         else:
             await self.bot.say("{} You need an account to receive :cherry_blossom:."
                                " Type `{}bank register` to open one.".format(
@@ -446,9 +446,9 @@ class Gambling:
     async def payouttime(self, ctx, seconds: int):
         """Seconds between each payout"""
         server = ctx.message.server
-        self.settings[server.id]["PAYDAY_TIME"] = seconds
+        self.settings[server.id]["PAYOUT_TIME"] = seconds
         await self.bot.say("Value modified. At least {} seconds must pass "
-                           "between each payday.".format(seconds))
+                           "between each payout.".format(seconds))
         dataIO.save_json(self.file_path, self.settings)
 
     @gamblingset.command(pass_context=True)
@@ -467,7 +467,7 @@ class Gambling:
         if credits < 0:
             credits = 0
         self.settings[server.id]["REGISTER_CREDITS"] = credits
-        await self.bot.say("Registering an account will now give {} credits."
+        await self.bot.say("Registering an account will now give {} :cherry_blossom:."
                            "".format(credits))
         dataIO.save_json(self.file_path, self.settings)
 
