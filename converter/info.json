@@ -1,6 +1,6 @@
 {
     "AUTHOR" : "Perth",
-    "INSTALL_MSG" : "[p]convert <unit of measure> #",
+    "INSTALL_MSG" : " To use the converter: [p]convert <unit command> #",
     "NAME" : "Converter",
     "SHORT" : "Convert from one meausrement to another",
     "DESCRIPTION" : "Convert from one measurement to another; HC goes international!"
