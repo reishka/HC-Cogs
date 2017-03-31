@@ -497,7 +497,7 @@ class Gambling:
         await self.bot.say("Cooldown is now {} seconds.".format(seconds))
         dataIO.save_json(self.file_path, self.settings)
 
-    @gamblinget.command(pass_context=True)
+    @gamblingset.command(pass_context=True)
     async def paydaytime(self, ctx, seconds: int):
         """Seconds between each payday"""
         server = ctx.message.server
