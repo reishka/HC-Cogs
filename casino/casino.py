@@ -366,7 +366,8 @@ class Gambling:
                     self.payday_register[server.id][
                         id] = int(time.perf_counter())
                     await self.bot.say(
-                        "{} Here, take some :cherry_blossom:! Enjoy! +{}"
+                        "{} :cherry_blossom: :cherry_blossom: :regional_indicator_p: :a: :regional_indicator_y: :o2: "
+                        ":regional_indicator_u: :regional_indicator_t: :cherry_blossom: :cherry_blossom: +{}"
                         ":cherry_blossom:!".format(
                             author.mention,
                             str(self.settings[server.id]["PAYDAY_CREDITS"])))
@@ -381,7 +382,9 @@ class Gambling:
                 self.bank.deposit_credits(author, self.settings[
                                           server.id]["PAYDAY_CREDITS"])
                 await self.bot.say(
-                    "{} Here, take some :cherry_blossom:! +{}:cherry_blossom:!".format(
+                    "{} :cherry_blossom: :cherry_blossom: :regional_indicator_p: :a: :regional_indicator_y: :o2: "
+                    ":regional_indicator_u: :regional_indicator_t: :cherry_blossom: :cherry_blossom: +{}"
+                    ":cherry_blossom:!".format(
                         author.mention,
                         str(self.settings[server.id]["PAYDAY_CREDITS"])))
         else:
