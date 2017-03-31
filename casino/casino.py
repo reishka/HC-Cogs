@@ -443,8 +443,8 @@ class Gambling:
             await self.bot.say(msg)
 
     @gamblingset.command(pass_context=True)
-    async def paydaytime(self, ctx, seconds: int):
-        """Seconds between each payday"""
+    async def payouttime(self, ctx, seconds: int):
+        """Seconds between each payout"""
         server = ctx.message.server
         self.settings[server.id]["PAYDAY_TIME"] = seconds
         await self.bot.say("Value modified. At least {} seconds must pass "
@@ -452,8 +452,8 @@ class Gambling:
         dataIO.save_json(self.file_path, self.settings)
 
     @gamblingset.command(pass_context=True)
-    async def payoutcredits(self, ctx, credits: int):
-        """Flowers earned each payday"""
+    async def payoutflowers(self, ctx, credits: int):
+        """Flowers earned each payout"""
         server = ctx.message.server
         self.settings[server.id]["PAYDAY_CREDITS"] = credits
         await self.bot.say("Every payday will now give {} :cherry_blossom:"
