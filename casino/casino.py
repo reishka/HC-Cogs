@@ -14,7 +14,6 @@ import logging
 import random
 
 default_settings = {"PAYDAY_TIME": 300, "PAYDAY_CREDITS": 120,
-                    "SLOT_MIN": 5, "SLOT_MAX": 100, "SLOT_TIME": 0,
                     "REGISTER_CREDITS": 0}
 
 
@@ -351,8 +350,8 @@ class Gambling:
             await self.bot.say("All bank accounts of this server have been "
                                "deleted.")
 
-    @commands.command(pass_context=True, no_pm=True)
-    async def payout(self, ctx):  # TODO
+    @_casino.command(pass_context=True, no_pm=True)
+    async def _payout(self, ctx):  # TODO
         """Get some free credits"""
         author = ctx.message.author
         server = author.server
@@ -390,15 +389,8 @@ class Gambling:
                                " Type `{}bank register` to open one.".format(
                                    author.mention, ctx.prefix))
 
-    @commands.group(pass_context=True)
-    async def leaderboard2(self, ctx):
-        """Server / global leaderboard
-        Defaults to server"""
-        if ctx.invoked_subcommand is None:
-            await ctx.invoke(self._server_leaderboard)
-
-    @leaderboard2.command(name="server", pass_context=True)
-    async def _server_leaderboard(self, ctx, top: int=10):
+    @_casino.command(pass_context=True)
+    async def leaderboard(self, ctx, top: int=10):
         """Prints out the server's leaderboard
         Defaults to top 10"""
         # Originally coded by Airenkun - edited by irdumb
@@ -423,35 +415,7 @@ class Gambling:
         else:
             await self.bot.say("There are no accounts in the bank.")
 
-    @leaderboard2.command(name="global")
-    async def _global_leaderboard(self, top: int=10):
-        """Prints out the global leaderboard
-        Defaults to top 10"""
-        if top < 1:
-            top = 10
-        bank_sorted = sorted(self.bank.get_all_accounts(),
-                             key=lambda x: x.balance, reverse=True)
-        unique_accounts = []
-        for acc in bank_sorted:
-            if not self.already_in_list(unique_accounts, acc):
-                unique_accounts.append(acc)
-        if len(unique_accounts) < top:
-            top = len(unique_accounts)
-        topten = unique_accounts[:top]
-        highscore = ""
-        place = 1
-        for acc in topten:
-            highscore += str(place).ljust(len(str(top)) + 1)
-            highscore += ("{} |{}| ".format(acc.name, acc.server.name)
-                          ).ljust(23 - len(str(acc.balance)))
-            highscore += str(acc.balance) + "\n"
-            place += 1
-        if highscore != "":
-            for page in pagify(highscore, shorten_by=12):
-                await self.bot.say(box(page, lang="py"))
-        else:
-            await self.bot.say("There are no accounts in the bank.")
-
+  
     def already_in_list(self, accounts, user):
         for acc in accounts:
             if user.id == acc.id:
