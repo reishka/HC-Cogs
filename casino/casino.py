@@ -66,8 +66,6 @@ class Bank:
         if not self.account_exists(user):
             if server.id not in self.accounts:
                 self.accounts[server.id] = {}
-            if user.id in self.accounts:  # Legacy account
-                balance = self.accounts[user.id]["balance"]
             else:
                 balance = initial_balance
             timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
@@ -228,7 +226,7 @@ class SetParser:
 class Gambling:
     """Casino
 
-    Get rich and have fun with imaginary currency!"""
+    Get rich and have fun with flowers!"""
 
     def __init__(self, bot):
         global default_settings
@@ -256,7 +254,7 @@ class Gambling:
             credits = settings.get("REGISTER_CREDITS", 0)
         try:
             account = self.bank.create_account(author, initial_balance=credits)
-            await self.bot.say("{} Ledger opened. Current balance: {}"
+            await self.bot.say("{} Ledger opened. Current balance: {}:cherry_blossom:"
                                "".format(author.mention, account.balance))
         except AccountAlreadyExists:
             await self.bot.say("{} You already have a ledger at the"
@@ -284,7 +282,7 @@ class Gambling:
             except NoAccount:
                 await self.bot.say("That user has no ledger.")
 
-    @_casino.command(pass_context=True, no_pm=True)
+    @commands.command(pass_context=True, no_pm=True)
     async def payout(self, ctx):
         """Get some free flowers"""
         author = ctx.message.author
