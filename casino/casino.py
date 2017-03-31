@@ -371,7 +371,7 @@ class Gambling:
                         ":cherry_blossom:".format(
                             author.mention,
                             str(self.settings[server.id]["PAYDAY_CREDITS"]),
-                            str(self.settings[server.id]["PAYDAY_CREDITS"]))
+                            str(self.settings[server.id]["PAYDAY_CREDITS"])))
                 else:
                     dtime = self.display_time(
                         self.settings[server.id]["PAYDAY_TIME"] - seconds)
@@ -388,7 +388,7 @@ class Gambling:
                     ":cherry_blossom:".format(
                         author.mention,
                         str(self.settings[server.id]["PAYDAY_CREDITS"]),
-                        str(self.settings[server.id]["PAYDAY_CREDITS"]))
+                        str(self.settings[server.id]["PAYDAY_CREDITS"])))
         else:
             await self.bot.say("{} You need an account to receive :cherry_blossom:."
                                " Type `{}bank register` to open one.".format(
