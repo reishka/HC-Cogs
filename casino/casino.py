@@ -269,7 +269,7 @@ class Gambling:
         if not user:
             user = ctx.message.author
             try:
-                await self.bot.say("{} Your balance is: {}".format(
+                await self.bot.say("{} Your balance is: {}:cherry_blossom:".format(
                     user.mention, self.bank.get_balance(user)))
             except NoAccount:
                 await self.bot.say("{} You don't have an account at the"
@@ -366,8 +366,8 @@ class Gambling:
                     self.payday_register[server.id][
                         id] = int(time.perf_counter())
                     await self.bot.say(
-                        "{} Here, take some :cherry_blossom:. Enjoy! (+{}"
-                        ":cherry_blossom:!)".format(
+                        "{} Here, take some :cherry_blossom:! Enjoy! +{}"
+                        ":cherry_blossom:!".format(
                             author.mention,
                             str(self.settings[server.id]["PAYDAY_CREDITS"])))
                 else:
@@ -381,7 +381,7 @@ class Gambling:
                 self.bank.deposit_credits(author, self.settings[
                                           server.id]["PAYDAY_CREDITS"])
                 await self.bot.say(
-                    "{} Here, take some :cherry_blossom:. Enjoy! (+{}:cherry_blossom:!)".format(
+                    "{} Here, take some :cherry_blossom:! +{}:cherry_blossom:!".format(
                         author.mention,
                         str(self.settings[server.id]["PAYDAY_CREDITS"])))
         else:
