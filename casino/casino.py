@@ -366,10 +366,11 @@ class Gambling:
                     self.payday_register[server.id][
                         id] = int(time.perf_counter())
                     await self.bot.say(
-                        "{} :cherry_blossom: :cherry_blossom: :regional_indicator_p: :a: :regional_indicator_y: :o2: "
+                        "{} :cherry_blossom: +{} :cherry_blossom: :cherry_blossom: :regional_indicator_p: :a: :regional_indicator_y: :o2: "
                         ":regional_indicator_u: :regional_indicator_t: :cherry_blossom: :cherry_blossom: +{}"
-                        ":cherry_blossom:!".format(
+                        ":cherry_blossom:".format(
                             author.mention,
+                            str(self.settings[server.id]["PAYDAY_CREDITS"],
                             str(self.settings[server.id]["PAYDAY_CREDITS"])))
                 else:
                     dtime = self.display_time(
@@ -382,10 +383,11 @@ class Gambling:
                 self.bank.deposit_credits(author, self.settings[
                                           server.id]["PAYDAY_CREDITS"])
                 await self.bot.say(
-                    "{} :cherry_blossom: :cherry_blossom: :regional_indicator_p: :a: :regional_indicator_y: :o2: "
+                    "{} :cherry_blossom: +{} :cherry_blossom: :cherry_blossom: :regional_indicator_p: :a: :regional_indicator_y: :o2: "
                     ":regional_indicator_u: :regional_indicator_t: :cherry_blossom: :cherry_blossom: +{}"
-                    ":cherry_blossom:!".format(
+                    ":cherry_blossom:".format(
                         author.mention,
+                        str(self.settings[server.id]["PAYDAY_CREDITS"],
                         str(self.settings[server.id]["PAYDAY_CREDITS"])))
         else:
             await self.bot.say("{} You need an account to receive :cherry_blossom:."
