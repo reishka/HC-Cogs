@@ -397,7 +397,7 @@ class Gambling:
         if ctx.invoked_subcommand is None:
             await ctx.invoke(self._server_leaderboard)
 
-    @leaderboard.command(name="server", pass_context=True)
+    @leaderboard2.command(name="server", pass_context=True)
     async def _server_leaderboard(self, ctx, top: int=10):
         """Prints out the server's leaderboard
         Defaults to top 10"""
@@ -423,7 +423,7 @@ class Gambling:
         else:
             await self.bot.say("There are no accounts in the bank.")
 
-    @leaderboard.command(name="global")
+    @leaderboard2.command(name="global")
     async def _global_leaderboard(self, top: int=10):
         """Prints out the global leaderboard
         Defaults to top 10"""
