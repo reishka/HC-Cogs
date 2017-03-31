@@ -256,7 +256,7 @@ class Gambling:
             credits = settings.get("REGISTER_CREDITS", 0)
         try:
             account = self.bank.create_account(author, initial_balance=credits)
-            await self.bot.say("{} Account opened. Current balance: {}"
+            await self.bot.say("{} Account opened. Current balance: {}:cherry_blossom:"
                                "".format(author.mention, account.balance))
         except AccountAlreadyExists:
             await self.bot.say("{} You already have an account at the"
@@ -285,55 +285,55 @@ class Gambling:
 
     @_casino.command(pass_context=True)
     async def transfer(self, ctx, user: discord.Member, sum: int):
-        """Transfer credits to other users"""
+        """Transfer flowers to other users"""
         author = ctx.message.author
         try:
             self.bank.transfer_credits(author, user, sum)
-            logger.info("{}({}) transferred {} credits to {}({})".format(
+            logger.info("{}({}) transferred {} :cherry_blossom: to {}({})".format(
                 author.name, author.id, sum, user.name, user.id))
-            await self.bot.say("{} credits have been transferred to {}'s"
+            await self.bot.say("{} :cherry_blossom: have been transferred to {}'s"
                                " account.".format(sum, user.name))
         except NegativeValue:
-            await self.bot.say("You need to transfer at least 1 credit.")
+            await self.bot.say("You need to transfer at least 1 :cherry_blossom:.")
         except SameSenderAndReceiver:
-            await self.bot.say("You can't transfer credits to yourself.")
+            await self.bot.say("You can't transfer :cherry_blossom: to yourself.")
         except InsufficientBalance:
-            await self.bot.say("You don't have that sum in your bank account.")
+            await self.bot.say("You don't have that many :cherry_blossom: in your bank account.")
         except NoAccount:
             await self.bot.say("That user has no bank account.")
 
     @_casino.command(name="set", pass_context=True)
     @checks.admin_or_permissions(manage_server=True)
     async def _set(self, ctx, user: discord.Member, credits: SetParser):
-        """Sets credits of user's bank account. See help for more operations
-        Passing positive and negative values will add/remove credits instead
+        """Sets flowers of user's bank account. See help for more operations
+        Passing positive and negative values will add/remove flowers instead
         Examples:
-            bank set @Twentysix 26 - Sets 26 credits
-            bank set @Twentysix +2 - Adds 2 credits
-            bank set @Twentysix -6 - Removes 6 credits"""
+            casino set @Red 26 - Sets 26 flowers
+            casino set @Red +2 - Adds 2 flowers
+            casino set @Red -6 - Removes 6 flowers"""
         author = ctx.message.author
         try:
             if credits.operation == "deposit":
                 self.bank.deposit_credits(user, credits.sum)
                 logger.info("{}({}) added {} credits to {} ({})".format(
                     author.name, author.id, credits.sum, user.name, user.id))
-                await self.bot.say("{} credits have been added to {}"
+                await self.bot.say("{} :cherry_blossom: have been added to {}"
                                    "".format(credits.sum, user.name))
             elif credits.operation == "withdraw":
                 self.bank.withdraw_credits(user, credits.sum)
                 logger.info("{}({}) removed {} credits to {} ({})".format(
                     author.name, author.id, credits.sum, user.name, user.id))
-                await self.bot.say("{} credits have been withdrawn from {}"
+                await self.bot.say("{} :cherry_blossom: have been withdrawn from {}"
                                    "".format(credits.sum, user.name))
             elif credits.operation == "set":
                 self.bank.set_credits(user, credits.sum)
-                logger.info("{}({}) set {} credits to {} ({})"
+                logger.info("{}({}) set {} :cherry_blossom: to {} ({})"
                             "".format(author.name, author.id, credits.sum,
                                       user.name, user.id))
-                await self.bot.say("{}'s credits have been set to {}".format(
+                await self.bot.say("{}'s :cherry_blossom: have been set to {}".format(
                     user.name, credits.sum))
         except InsufficientBalance:
-            await self.bot.say("User doesn't have enough credits.")
+            await self.bot.say("User doesn't have enough :cherry_blossom:.")
         except NoAccount:
             await self.bot.say("User has no bank account.")
 
@@ -351,8 +351,8 @@ class Gambling:
                                "deleted.")
 
     @_casino.command(pass_context=True, no_pm=True)
-    async def _payout(self, ctx):  # TODO
-        """Get some free credits"""
+    async def payout(self, ctx):  # TODO
+        """Get some free flowers"""
         author = ctx.message.author
         server = author.server
         id = author.id
@@ -366,31 +366,31 @@ class Gambling:
                     self.payday_register[server.id][
                         id] = int(time.perf_counter())
                     await self.bot.say(
-                        "{} Here, take some credits. Enjoy! (+{}"
-                        " credits!)".format(
+                        "{} Here, take some :cherry_blossom:. Enjoy! (+{}"
+                        ":cherry_blossom:!)".format(
                             author.mention,
                             str(self.settings[server.id]["PAYDAY_CREDITS"])))
                 else:
                     dtime = self.display_time(
                         self.settings[server.id]["PAYDAY_TIME"] - seconds)
                     await self.bot.say(
-                        "{} Too soon. For your next payday you have to"
+                        "{} Too soon. For your next payout you have to"
                         " wait {}.".format(author.mention, dtime))
             else:
                 self.payday_register[server.id][id] = int(time.perf_counter())
                 self.bank.deposit_credits(author, self.settings[
                                           server.id]["PAYDAY_CREDITS"])
                 await self.bot.say(
-                    "{} Here, take some credits. Enjoy! (+{} credits!)".format(
+                    "{} Here, take some :cherry_blossom:. Enjoy! (+{}:cherry_blossom:!)".format(
                         author.mention,
                         str(self.settings[server.id]["PAYDAY_CREDITS"])))
         else:
-            await self.bot.say("{} You need an account to receive credits."
+            await self.bot.say("{} You need an account to receive :cherry_blossom:."
                                " Type `{}bank register` to open one.".format(
                                    author.mention, ctx.prefix))
 
     @_casino.command(pass_context=True)
-    async def leaderboard(self, ctx, top: int=10):
+    async def ranking(self, ctx, top: int=10):
         """Prints out the server's leaderboard
         Defaults to top 10"""
         # Originally coded by Airenkun - edited by irdumb
@@ -438,30 +438,6 @@ class Gambling:
             await self.bot.say(msg)
 
     @gamblingset.command(pass_context=True)
-    async def slotmin(self, ctx, bid: int):
-        """Minimum slot machine bid"""
-        server = ctx.message.server
-        self.settings[server.id]["SLOT_MIN"] = bid
-        await self.bot.say("Minimum bid is now {} credits.".format(bid))
-        dataIO.save_json(self.file_path, self.settings)
-
-    @gamblingset.command(pass_context=True)
-    async def slotmax(self, ctx, bid: int):
-        """Maximum slot machine bid"""
-        server = ctx.message.server
-        self.settings[server.id]["SLOT_MAX"] = bid
-        await self.bot.say("Maximum bid is now {} credits.".format(bid))
-        dataIO.save_json(self.file_path, self.settings)
-
-    @gamblingset.command(pass_context=True)
-    async def slottime(self, ctx, seconds: int):
-        """Seconds between each slots use"""
-        server = ctx.message.server
-        self.settings[server.id]["SLOT_TIME"] = seconds
-        await self.bot.say("Cooldown is now {} seconds.".format(seconds))
-        dataIO.save_json(self.file_path, self.settings)
-
-    @gamblingset.command(pass_context=True)
     async def paydaytime(self, ctx, seconds: int):
         """Seconds between each payday"""
         server = ctx.message.server
@@ -471,17 +447,17 @@ class Gambling:
         dataIO.save_json(self.file_path, self.settings)
 
     @gamblingset.command(pass_context=True)
-    async def paydaycredits(self, ctx, credits: int):
-        """Credits earned each payday"""
+    async def payoutcredits(self, ctx, credits: int):
+        """Flowers earned each payday"""
         server = ctx.message.server
         self.settings[server.id]["PAYDAY_CREDITS"] = credits
-        await self.bot.say("Every payday will now give {} credits."
+        await self.bot.say("Every payday will now give {} :cherry_blossom:"
                            "".format(credits))
         dataIO.save_json(self.file_path, self.settings)
 
     @gamblingset.command(pass_context=True)
-    async def registercredits(self, ctx, credits: int):
-        """Credits given on registering an account"""
+    async def registerflowers(self, ctx, credits: int):
+        """Flowers given on registering an account"""
         server = ctx.message.server
         if credits < 0:
             credits = 0
