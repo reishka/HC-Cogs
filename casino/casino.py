@@ -233,7 +233,7 @@ class Gambling:
         self.bank = Bank(bot, "data/casino/bank.json")
         self.file_path = "data/casino/settings.json"
         self.settings = dataIO.load_json(self.file_path)
-        if "PAYDAY_TIME" in self.settings:  # old format
+        if "PAYOUT_TIME" in self.settings:  # old format
             default_settings = self.settings
             self.settings = {}
         self.settings = defaultdict(lambda: default_settings, self.settings)
@@ -455,8 +455,8 @@ class Gambling:
     async def payoutflowers(self, ctx, credits: int):
         """Flowers earned each payout"""
         server = ctx.message.server
-        self.settings[server.id]["PAYDAY_CREDITS"] = credits
-        await self.bot.say("Every payday will now give {} :cherry_blossom:"
+        self.settings[server.id]["PAYOUT_FLOWERS"] = credits
+        await self.bot.say("Every payout will now give {} :cherry_blossom:"
                            "".format(credits))
         dataIO.save_json(self.file_path, self.settings)
 
@@ -466,7 +466,7 @@ class Gambling:
         server = ctx.message.server
         if credits < 0:
             credits = 0
-        self.settings[server.id]["REGISTER_CREDITS"] = credits
+        self.settings[server.id]["REGISTER_FLOWERS"] = credits
         await self.bot.say("Registering an account will now give {} :cherry_blossom:."
                            "".format(credits))
         dataIO.save_json(self.file_path, self.settings)
