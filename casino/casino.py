@@ -68,11 +68,11 @@ class Bank:
                 self.accounts[server.id] = {}
             else:
                 balance = initial_balance
-            timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
-            account = {"name": user.name,
-                       "balance": balance,
-                       "created_at": timestamp
-                       }
+                timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+                account = {"name": user.name,
+                           "balance": balance,
+                           "created_at": timestamp
+                           }
             self.accounts[server.id][user.id] = account
             self._save_bank()
             return self.get_account(user)
