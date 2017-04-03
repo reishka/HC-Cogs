@@ -364,7 +364,7 @@ class Gambling:
                               id] - int(time.perf_counter()))
                 if seconds >= self.settings[server.id]["PAYOUT_TIME"]:
                     self.bank.deposit_credits(author, self.settings[
-                                              server.id]["PAYOUT_CREDITS"])
+                                              server.id]["PAYOUT_FLOWERS"])
                     self.payday_register[server.id][
                         id] = int(time.perf_counter())
                     await self.bot.say(
@@ -372,8 +372,8 @@ class Gambling:
                         ":regional_indicator_u: :regional_indicator_t: :cherry_blossom: :cherry_blossom: +{} "
                         ":cherry_blossom:".format(
                             author.mention,
-                            str(self.settings[server.id]["PAYOUT_CREDITS"]),
-                            str(self.settings[server.id]["PAYOUT_CREDITS"])))
+                            str(self.settings[server.id]["PAYOUT_FLOWERS"]),
+                            str(self.settings[server.id]["PAYOUT_FLOWERS"])))
                 else:
                     dtime = self.display_time(
                         self.settings[server.id]["PAYOUT_TIME"] - seconds)
@@ -383,14 +383,14 @@ class Gambling:
             else:
                 self.payday_register[server.id][id] = int(time.perf_counter())
                 self.bank.deposit_credits(author, self.settings[
-                                          server.id]["PAYOUT_CREDITS"])
+                                          server.id]["PAYOUT_FLOWERS"])
                 await self.bot.say(
                     "{} :cherry_blossom: +{} :cherry_blossom: :cherry_blossom: :regional_indicator_p: :a: :regional_indicator_y: :o2: "
                     ":regional_indicator_u: :regional_indicator_t: :cherry_blossom: :cherry_blossom: +{} "
                     ":cherry_blossom:".format(
                         author.mention,
-                        str(self.settings[server.id]["PAYOUT_CREDITS"]),
-                        str(self.settings[server.id]["PAYOUT_CREDITS"])))
+                        str(self.settings[server.id]["PAYOUT_FLOWERS"]),
+                        str(self.settings[server.id]["PAYOUT_FLOWERS"])))
         else:
             await self.bot.say("{} You need an account to receive :cherry_blossom:."
                                " Type `{}bank register` to open one.".format(
