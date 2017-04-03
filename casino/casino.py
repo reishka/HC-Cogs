@@ -61,7 +61,7 @@ class Bank:
         self.accounts = dataIO.load_json(file_path)
         self.bot = bot
 
-def create_account(self, user, *, initial_balance=0):
+    def create_account(self, user, *, initial_balance=0):
         server = user.server
         if not self.account_exists(user):
             if server.id not in self.accounts:
