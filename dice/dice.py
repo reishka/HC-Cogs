@@ -7,9 +7,9 @@ class Dice:
 
 	def __init__(self, bot):
 		self.bot = bot
-		self.roll_arr = []
-		self.discord_arr =[]
-		self.discord_num={'0':':zero:',
+		self.roll_arr = []			# Array of rolls
+		self.discord_arr =[]			# Array of discord emoji rolls
+		self.discord_dict ={'0':':zero:',	# Dictionary of discord emoji
 				   '1':':one:',
 				   '2':':two:',
 				   '3':':three:',
@@ -18,7 +18,8 @@ class Dice:
 				   '6':':six:',
 				   '7':':seven:',
 				   '8':':eight:',
-				   '9':':nine:'}
+				   '9':':ninne:',
+				  'sod':':small_orange_diamond:'}
 
 	def roll_dice(self, dice, sides):
 
@@ -26,21 +27,23 @@ class Dice:
 		for i in range(0, dice):
 			result_arr.append(random.randint(1, sides))
 		
+		result_arr.sort()
 		return result_arr
 
-	def discord_dice(self, result):
-
+	def discord_dice(self):
+		
+		result_arr=[]
 		for roll in self.roll_arr:
 			derp = ''
 			for d in str(roll):
-				derp += (self.discord_num[d])
-			result.append(derp)
+				derp += (self.discord_dict[d])
+			result_arr.append(derp)
 
-		self.discord_arr = result
+		return result_arr
 
 	@commands.command(pass_context = True)
 	async def droll(self, ctx, dice=4, sides=20):
-		""" Rolls #dx. Default roll is 4d20. """
+		""" Rolls #dx. Default roll is 4d20. Use [p]droll # x """
 
 		def is_number(s):
 			try:
@@ -54,15 +57,15 @@ class Dice:
 			# Limit dice so we don't overwhelm Discord 
 			if dice <= 100:
 			
+				# Get our dice rolls
 				self.roll_arr = self.roll_dice(int(dice), int(sides))
+				# Convert our dice rolls to discord number emoji
+				self.discord_arr = self.discord_dice()
 
-				self.discord_arr = []
-				self.discord_dice([])
-
-				# Text output for now
-				message =':small_orange_diamond: '
+				# Text output for rolls
+				message = self.discord_dict['sod'] + ' '
 				for roll in self.discord_arr:
-					message += (str(roll) + ' :small_orange_diamond: ')
+					message += (str(roll) + ' ' + self.discord_dict['sod'] + ' ')
 				
 				await self.bot.say("You rolled: \n" + message)
 			else:
