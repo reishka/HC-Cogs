@@ -1,6 +1,6 @@
 {
     "AUTHOR" : "Perth",
-    "INSTALL_MSG" : "Roll dice using [p]droll #dx, where # is the number of dice and x is the sides.",
+    "INSTALL_MSG" : "Roll dice using [p]droll # x, where # is the number of dice and x is the sides.",
     "NAME" : "Dice",
     "SHORT" : "Dice Roller",
     "DESCRIPTION" : "Dice Roller"
