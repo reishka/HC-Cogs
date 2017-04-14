@@ -27,7 +27,7 @@ class Dice:
 		
 		self.roll_arr.sort()
 
-	def discord_dice(self, result, derp):
+	def discord_dice(self, result):
 
 		for roll in self.roll_arr:
 			derp = ''
@@ -57,12 +57,12 @@ class Dice:
 				self.roll_dice(int(dice), int(sides))
 
 				self.discord_arr = []
-				self.discord_dice([], str(derp))
+				self.discord_dice([])
 
 				# Text output for now
-				message =''
+				message =':small_orange_diamond: '
 				for roll in self.discord_arr:
-					message += (str(roll))
+					message += (str(roll) + ' :small_orange_diamond: ')
 				
 				await self.bot.say("You rolled: \n" + message)
 			else:
