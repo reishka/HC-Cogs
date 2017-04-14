@@ -23,16 +23,12 @@ class Dice:
 	def roll_dice(self, dice, sides, result):
 
 		for i in range(0, dice):
-			roll = random.randint(1, sides)
-			
-			result.append(roll)
-
-		self.roll_arr = result
+			self.roll_arr.append(random.randint(1, sides))
+		
 		self.roll_arr.sort()
 
-	def discord_dice(self, result):
+	def discord_dice(self, result, derp):
 
-		derp = []
 		for roll in self.roll_arr:
 			derp = ''
 			for d in str(roll):
@@ -58,17 +54,17 @@ class Dice:
 			if dice <= 100:
 			
 				self.roll_arr = []
-				self.roll_dice(int(dice), int(sides), [])
+				self.roll_dice(int(dice), int(sides))
 
 				self.discord_arr = []
-				self.discord_dice([])
+				self.discord_dice([], str(derp))
 
 				# Text output for now
 				message =''
 				for roll in self.discord_arr:
 					message += (str(roll))
 				
-				await self.bot.say(self.discord_num['0'])
+				await self.bot.say("You rolled: \n" + message)
 			else:
 				await self.bot.say("Too many dice. You can roll up to 100 dice at a time.")
 
