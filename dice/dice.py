@@ -22,10 +22,11 @@ class Dice:
 
 	def roll_dice(self, dice, sides):
 
+		result_arr = []
 		for i in range(0, dice):
-			self.roll_arr.append(random.randint(1, sides))
+			result_arr.append(random.randint(1, sides))
 		
-		self.roll_arr.sort()
+		return result_arr.sort()
 
 	def discord_dice(self, result):
 
@@ -53,8 +54,7 @@ class Dice:
 			# Limit dice so we don't overwhelm Discord 
 			if dice <= 100:
 			
-				self.roll_arr = []
-				self.roll_dice(int(dice), int(sides))
+				self.roll_arr = self.roll_dice(int(dice), int(sides))
 
 				self.discord_arr = []
 				self.discord_dice([])
