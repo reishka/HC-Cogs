@@ -26,7 +26,7 @@ class Dice:
 		for i in range(0, dice):
 			result_arr.append(random.randint(1, sides))
 		
-		return result_arr.sort()
+		return result_arr
 
 	def discord_dice(self, result):
 
