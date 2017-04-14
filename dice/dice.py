@@ -34,9 +34,9 @@ class Dice:
 
 		derp = []
 		for roll in self.roll_arr:
-			derp = []
+			derp = ''
 			for d in str(roll):
-				derp.append(self.discord_num[d])
+				derp += (self.discord_num[d])
 			result.append(derp)
 
 		self.discord_arr = result
