@@ -18,7 +18,7 @@ class Dice:
 			self.roll_arr = result
 
 	@commands.command(pass_context = True)
-	async def roll(self, ctx, dice=4, sides=20):
+	async def droll(self, ctx, dice=4, sides=20):
 		""" Rolls #dx. Default roll is 4d20. """
 
 		def is_number(s):
