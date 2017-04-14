@@ -52,7 +52,7 @@ class Dice:
 		if is_number(dice) and is_number(sides):
 
 			# Limit dice so we don't overwhelm Discord 
-			if dice <= 100
+			if dice <= 100:
 			
 				self.roll_arr = []
 				self.roll_dice(int(dice), int(sides), [])
