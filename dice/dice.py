@@ -62,7 +62,7 @@ class Dice:
 				# Convert our dice rolls to discord number emoji
 				self.discord_arr = self.discord_emoji(self.roll_arr) 
 				
-				discord_total = self.discord_emoji(sum(self.roll_arr))
+				discord_total = self.discord_emoji(list(str(sum(self.roll_arr))))
 				
 				# Text output for rolls
 				message = "You rolled: \n" + self.discord_dict['sod'] + ' '
