@@ -71,7 +71,7 @@ class Dice:
 				message += "\n Your sum: \n" 
 				
 				for num in discord_total:
-					message += (str(num)   
+					message += (str(num))   
 				
 				await self.bot.say( message )
 			else:
