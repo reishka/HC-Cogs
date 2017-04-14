@@ -61,13 +61,13 @@ class Dice:
 				self.roll_arr = self.roll_dice(int(dice), int(sides))
 				# Convert our dice rolls to discord number emoji
 				self.discord_arr = self.discord_dice() 
-
+				
 				# Text output for rolls
 				message = self.discord_dict['sod'] + ' '
 				for roll in self.discord_arr:
 					message += (str(roll) + ' ' + self.discord_dict['sod'] + ' ')
 				
-				await self.bot.say("You rolled: \n" + message + " \n Your sum: " + self.roll_arr.sum())
+				await self.bot.say("You rolled: \n" + message + " \n Your sum: " + sum(self.roll_arr)
 			else:
 				await self.bot.say("Too many dice. You can roll up to 50 dice at a time.")
 
