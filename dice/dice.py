@@ -32,8 +32,8 @@ class Dice:
 
 	def discord_dice(self, result):
 
-		for roll in self.roll_arr
-			for d in roll
+		for roll in self.roll_arr:
+			for d in roll:
 				result.append(dict(str(d)))
 
 		self.discord_arr = result
