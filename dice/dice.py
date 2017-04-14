@@ -32,9 +32,11 @@ class Dice:
 
 	def discord_dice(self, result):
 
+		derp = []
 		for roll in self.roll_arr:
 			for d in str(roll):
-				result.append(self.discord_num[d])
+				derp.append(self.discord_num[d])
+			result.append(derp)
 
 		self.discord_arr = result
 
