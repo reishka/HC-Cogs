@@ -65,7 +65,7 @@ class Dice:
 
 				# Text output for now
 				for roll in self.discord_arr:
-					message.append(str(roll)
+					message.append(str(roll))
 				
 				await self.bot.say("You rolled: \n" + message)
 			else:
