@@ -30,10 +30,10 @@ class Dice:
 		result_arr.sort()
 		return result_arr
 
-	def discord_dice(self):
+	def discord_emoji(self, num_array):
 		
 		result_arr=[]
-		for roll in self.roll_arr:
+		for roll in num_array:
 			derp = ''
 			for d in str(roll):
 				derp += (self.discord_dict[d])
@@ -60,14 +60,17 @@ class Dice:
 				# Get our dice rolls
 				self.roll_arr = self.roll_dice(int(dice), int(sides))
 				# Convert our dice rolls to discord number emoji
-				self.discord_arr = self.discord_dice() 
+				self.discord_arr = self.discord_emoji(self.roll_arr) 
+				
+				discord_total = self.discord_emoji(sum(self.roll_arr))
 				
 				# Text output for rolls
-				message = self.discord_dict['sod'] + ' '
+				message = "You rolled: \n" + self.discord_dict['sod'] + ' '
 				for roll in self.discord_arr:
 					message += (str(roll) + ' ' + self.discord_dict['sod'] + ' ')
+				message += "\n Your sum: \n" + str(discord_total) 
 				
-				await self.bot.say("You rolled: \n" + message + " \n Your sum: " + str(sum(self.roll_arr)))
+				await self.bot.say( message )
 			else:
 				await self.bot.say("Too many dice. You can roll up to 50 dice at a time.")
 
