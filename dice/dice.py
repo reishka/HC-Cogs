@@ -69,11 +69,11 @@ class Dice:
 				message = "You rolled: \n" + self.discord_dict['sod'] + ' '
 				for roll in self.discord_arr:
 					message += (str(roll) + ' ' + self.discord_dict['sod'] + ' ')
-				message += "\n Your sum: \n" + ' ' + self.discord_dict['sod'] + ' '
+				message += "\n Your sum: \n" + ' ' + self.discord_dict['sbd'] + ' '
 				
 				for num in discord_total:
 					message += (str(num))   
-				message += self.discord_dict['sod'] + ' '
+				message += self.discord_dict['sbd'] + ' '
 				
 				await self.bot.say( message )
 			else:
