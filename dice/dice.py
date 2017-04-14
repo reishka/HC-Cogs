@@ -67,7 +67,7 @@ class Dice:
 				for roll in self.discord_arr:
 					message += (str(roll) + ' ' + self.discord_dict['sod'] + ' ')
 				
-				await self.bot.say("You rolled: \n" + message + " \n Your sum: " + sum(self.roll_arr))
+				await self.bot.say("You rolled: \n" + message + " \n Your sum: " + str(sum(self.roll_arr)))
 			else:
 				await self.bot.say("Too many dice. You can roll up to 50 dice at a time.")
 
