@@ -55,7 +55,7 @@ class Dice:
 		if is_number(dice) and is_number(sides):
 
 			# Limit dice so we don't overwhelm Discord 
-			if dice <= 100:
+			if dice <= 50:
 			
 				# Get our dice rolls
 				self.roll_arr = self.roll_dice(int(dice), int(sides))
@@ -69,7 +69,7 @@ class Dice:
 				
 				await self.bot.say("You rolled: \n" + message)
 			else:
-				await self.bot.say("Too many dice. You can roll up to 100 dice at a time.")
+				await self.bot.say("Too many dice. You can roll up to 50 dice at a time.")
 
 		else:
 			await self.bot.say("That's not proper dice format! Use [p]droll # x (ie: [p]droll 2 4)")
