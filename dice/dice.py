@@ -19,7 +19,8 @@ class Dice:
 				   '7':':seven:',
 				   '8':':eight:',
 				   '9':':nine:',
-				  'sod':':small_orange_diamond:'}
+				  'sod':':small_orange_diamond:',
+				  'sbd':':small_blue_diamond:'}
 
 	def roll_dice(self, dice, sides):
 
@@ -68,10 +69,11 @@ class Dice:
 				message = "You rolled: \n" + self.discord_dict['sod'] + ' '
 				for roll in self.discord_arr:
 					message += (str(roll) + ' ' + self.discord_dict['sod'] + ' ')
-				message += "\n Your sum: \n" 
+				message += "\n Your sum: \n" + ' ' + self.discord_dict['sod'] + ' '
 				
 				for num in discord_total:
 					message += (str(num))   
+				message += self.discord_dict['sod'] + ' '
 				
 				await self.bot.say( message )
 			else:
