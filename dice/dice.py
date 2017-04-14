@@ -30,7 +30,7 @@ class Dice:
 		self.roll_arr = result
 		self.roll_arr.sort()
 
-	def discord_dice(self, result)
+	def discord_dice(self, result):
 
 		for roll in self.roll_arr
 			for d in roll
