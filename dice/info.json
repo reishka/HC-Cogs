@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "Perth",
+    "INSTALL_MSG" : "Roll dice using [p]# d$, where # is the number of dice and $ is the sides.",
+    "NAME" : "Dice",
+    "SHORT" : "Dice Roller",
+    "DESCRIPTION" : "Dice Roller"
+}
