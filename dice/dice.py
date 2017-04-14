@@ -7,7 +7,18 @@ class Dice:
 
 	def __init__(self, bot):
 		self.bot = bot
-		self.roll_vals = []
+		self.roll_arr = []
+		self.discord_arr =[]
+		self.dict={'0':':zero:',
+				   '1':':one:',
+				   '2':':two:',
+				   '3':':three:',
+				   '4':':four:',
+				   '5':':five:',
+				   '6':':six:',
+				   '7':':seven:',
+				   '8':':eight:',
+				   '9':':nine:'}
 
 	def roll_dice(self, dice, sides, result):
 
@@ -15,7 +26,17 @@ class Dice:
 			roll = random.randint(1, sides)
 			
 			result.append(roll)
-			self.roll_arr = result
+
+		self.roll_arr = result
+		self.roll_arr.sort()
+
+	def discord_dice(self, result)
+
+		for roll in self.roll_arr
+			for d in roll
+				result.append(dict(str(d)))
+
+		self.discord_arr = result
 
 	@commands.command(pass_context = True)
 	async def droll(self, ctx, dice=4, sides=20):
@@ -29,16 +50,24 @@ class Dice:
 				return False
 		
 		if is_number(dice) and is_number(sides):
-			
-			self.roll_arr = []
-			self.roll_dice(int(dice), int(sides), [])
 
-			# Text output for now
-			message = "**[" + "]** **[".join(str(roll) for roll in self.roll_arr) + "]**"
-			await self.bot.say("You rolled: \n" + message)
+			# Limit dice so we don't overwhelm Discord 
+			if dice <= 100
+			
+				self.roll_arr = []
+				self.roll_dice(int(dice), int(sides), [])
+
+				self.discord_arr = []
+				self.discord_dice([])
+
+				# Text output for now
+				message = "[" + "] [".join(str(roll) for roll in self.discord_arr) + "]"
+				await self.bot.say("You rolled: \n" + message)
+			else
+				await self.bot.say("Too many dice. You can roll up to 100 dice at a time.")
 
 		else:
-			await self.bot.say("That's not proper dice format! Use [p]roll #dx (ie: 2d4)")
+			await self.bot.say("That's not proper dice format! Use [p]droll # x (ie: [p]droll 2 4)")
 
 
 def setup(bot):
