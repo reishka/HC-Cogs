@@ -1,1 +1,7 @@
-
+{
+    "AUTHOR" : "Perth",
+    "INSTALL_MSG" : " Welcome to the casino! Set up your ledger using [p]x",
+    "NAME" : "Gambling",
+    "SHORT" : "Casino gambling with flower currency",
+    "DESCRIPTION" : "Casino gambling with flower currency"
+}
