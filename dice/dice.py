@@ -20,7 +20,7 @@ class Dice:
 				   '8':':eight:',
 				   '9':':nine:'}
 
-	def roll_dice(self, dice, sides, result):
+	def roll_dice(self, dice, sides):
 
 		for i in range(0, dice):
 			self.roll_arr.append(random.randint(1, sides))
