@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import random
+from .utils.dataIO import fileIO
 
 # Third Party Libraries
 try: 
@@ -14,10 +15,16 @@ class Dice:
 
 	def __init__(self, bot):
 		self.bot = bot
-		self.DICE_PATH = 'data/dice/d'		# Where our dice live
-		self.roll_arr = []			# Array of rolls
-		self.image_rolls = []			# Array of image rolls
-
+		self.DICE_PATH = 'data/dice/d'			# Where our dice live
+		self.SETTINGS_PATH = 'data/dice/settings.json'	# Where our settings live
+		self.roll_arr = []				# Array of rolls
+		self.image_rolls = []				# Array of image rolls
+		
+		self.settings = fileIO(self.SETTINGS_PATH, "load")
+		
+		self.default_settings = {"DICE_WIDTH": 7,
+				    	"SUM": "Y"}
+		
 	def roll_dice(self, dice, sides):
 
 		result_arr = []
@@ -39,10 +46,10 @@ class Dice:
 	
 	def image_grid(self, image_arr, dice):
 		
-		# Our grid will always be 5 across, 100x100 px each cell.
+		# Our grid will be determined by user settings, 100x100 px each cell.
 		# Height will be determined by number of dice 
 		
-		width = 500 # Default width
+		width = int(self.settings["DICE_WIDTH"]) # Default width
 		if dice<5:
 			width = dice*100
 		
@@ -95,6 +102,12 @@ class Dice:
 			await self.bot.say("That's not proper dice format! Use [p]droll # x (ie: [p]droll 2 4)")
 
 
+def file_check():
+    	
+	if not dataIO.is_valid_json(self.SETTINGS_PATH):
+        	print("Creating default settings file...")
+		dataIO.save_json(self.SETTINGS_PATH, self.default_settings)
+			
 def setup(bot):
 	if not pillowAvailable:
 		raise RuntimeError("You need to run 'pip3 install Pillow'")
