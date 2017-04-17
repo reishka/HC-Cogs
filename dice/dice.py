@@ -20,7 +20,7 @@ class Dice:
 		self.roll_arr = []				# Array of rolls
 		self.image_rolls = []				# Array of image rolls
 		
-		self.settings = fileIO(self.SETTINGS_PATH, "load")
+		self.settings = fileIO.load_json(self.SETTINGS_PATH)
 		
 		self.default_settings = {"DICE_WIDTH": 7,
 				    	"SUM": "Y"}
