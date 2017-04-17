@@ -32,8 +32,7 @@ class Dice:
 		result_arr=[]
 		for roll in num_array:
 			derp=''
-			for d in str(roll):
-				derp += self.DICE_PATH + str(sides) +"/"+str(d)+".jpg"
+			derp += self.DICE_PATH + str(sides) +"/"+str(d)+".jpg"
 			result_arr.append(derp)
 
 		return result_arr
