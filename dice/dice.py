@@ -89,7 +89,7 @@ class Dice:
 					canvas.paste(im, (x, y))
 					image_index+=1
 		
-		canvas.save('data/dice/temp.jpg', jpg)
+		canvas.save('data/dice/temp.jpg', "JPG")
 
 	@commands.command(pass_context = True)
 	async def droll(self, ctx, dice=4, sides=20):
