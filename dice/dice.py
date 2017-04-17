@@ -98,7 +98,7 @@ class Dice:
 				#	message += str(roll) + ' '
 				
 				for dimage in self.image_rolls:
-					await self.bot.sen_file(str(dimage))
+					await self.bot.send_file(str(dimage))
 
 				await self.bot.say( message )
 			else:
