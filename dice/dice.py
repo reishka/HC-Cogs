@@ -1,7 +1,13 @@
 import discord
 from discord.ext import commands
 import random
-from .utils.dataIO import fileIO
+
+# Third Party Libraries
+try: 
+	from PIL import Image
+	pillowAvailable = True
+except ImportError:
+	pillowAvailable = False
 
 class Dice:
 	"""A dice roller, for all your dice rolling needs."""
@@ -31,7 +37,7 @@ class Dice:
 		for i in range(0, dice):
 			result_arr.append(random.randint(1, sides))
 		
-		result_arr.sort()
+		# result_arr.sort()
 		return result_arr
 
 	def discord_emoji(self, num_array):
@@ -55,6 +61,35 @@ class Dice:
 			result_arr.append(derp)
 
 		return result_arr
+	
+	def image_grid(self, image_arr, dice)
+		
+		# Our grid will always be 5 across, 100x100 px each cell.
+		# Height will be determined by number of dice 
+		
+		width = 500 # Default width
+		if dice<5:
+			width = dice*100
+		
+		height = dice/5
+			if dice/5 != 0
+			height +=1
+		height *=100
+		
+		# New blank image 
+		canvas = Image.new('RGB',(width, height))
+		
+		image_index=0
+		
+		for y in xrange(0, height, 100):
+			for x in xrange (0, width, 100):
+				if image_index < len(image_index):
+					im = Image.open(str(image_arr(image_index)))
+					im.thumbnail((100,100))
+					canvas.paste(im, (x, y))
+					image_index++
+		
+		canvas.save('data/dice/temp.jpg', jpg)
 
 	@commands.command(pass_context = True)
 	async def droll(self, ctx, dice=4, sides=20):
@@ -97,8 +132,10 @@ class Dice:
 				# for roll in self.image_rolls:
 				#	message += str(roll) + ' '
 				
-				for dimage in self.image_rolls:
-					await self.bot.send_file(ctx.message.channel, str(dimage))
+				#for dimage in self.image_rolls:
+				#	await self.bot.send_file(ctx.message.channel, str(dimage))
+				
+				await self.bot.send_file(ctx.message.channel, 'data/dice/temp.jpg')
 
 				# await self.bot.say( message )
 			else:
@@ -109,4 +146,7 @@ class Dice:
 
 
 def setup(bot):
-	bot.add_cog(Dice(bot))
+	if not pillowAvailable:
+		raise RuntimeError("You need to run 'pip3 install Pillow'")
+	else:
+		bot.add_cog(Dice(bot))
