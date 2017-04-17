@@ -8,7 +8,7 @@ class Dice:
 
 	def __init__(self, bot):
 		self.bot = bot
-		self.DICE_PATH = 'data/d'
+		self.DICE_PATH = 'data/dice/d'
 		self.roll_arr = []			# Array of rolls
 		self.discord_arr =[]			# Array of discord emoji rolls
 		self.image_rolls = []			# Array of image rolls
@@ -51,7 +51,7 @@ class Dice:
 		for roll in num_array:
 			derp=''
 			for d in str(roll):
-				derp += self.DICE_PATH + str(sides) +"/"+str(d)+".jpg "
+				derp += self.DICE_PATH + str(sides) +"/"+str(d)+".jpg"
 			result_arr.append(derp)
 
 		return result_arr
