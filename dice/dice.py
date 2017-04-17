@@ -87,7 +87,7 @@ class Dice:
 					im = Image.open(str(image_arr(image_index)))
 					im.thumbnail((100,100))
 					canvas.paste(im, (x, y))
-					image_index++
+					image_index+=1
 		
 		canvas.save('data/dice/temp.jpg', jpg)
 
