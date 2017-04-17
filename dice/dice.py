@@ -105,9 +105,9 @@ class Dice:
 def file_check():
     	
 	if not dataIO.is_valid_json(self.SETTINGS_PATH):
-        	print("Creating default settings file...")
+		print("Creating default settings file...")
 		dataIO.save_json(self.SETTINGS_PATH, self.default_settings)
-			
+
 def setup(bot):
 	if not pillowAvailable:
 		raise RuntimeError("You need to run 'pip3 install Pillow'")
