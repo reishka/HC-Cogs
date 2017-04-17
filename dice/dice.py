@@ -72,7 +72,7 @@ class Dice:
 			width = dice*100
 		
 		height = dice/5
-		if dice/5 != 0:
+		if dice%5 != 0:
 			height +=1
 		height *=100
 		
