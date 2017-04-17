@@ -47,13 +47,13 @@ class Dice:
 
 		return result_arr
 
-	def image_rolls(self, num_array, sides):
+	def dice_rolls(self, num_array, sides):
 
 		result_arr=[]
 		for roll in num_array:
 			derp=''
 			for d in str(roll):
-				derp += DICE_PATH + sides +"/"+str(d)+".jpg "
+				derp += DICE_PATH + str(sides) +"/"+str(d)+".jpg "
 			result_arr.append(derp)
 
 		return result_arr
@@ -78,7 +78,7 @@ class Dice:
 				self.roll_arr = self.roll_dice(int(dice), int(sides))
 
 				# Get our dice images
-				self.image_rolls = self.image_rolls(self.roll_arr, sides)
+				self.image_rolls = self.dice_rolls(self.roll_arr, int(sides))
 
 				# Convert our dice rolls to discord number emoji
 				# self.discord_arr = self.discord_emoji(self.roll_arr) 
