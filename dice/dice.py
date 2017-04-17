@@ -77,12 +77,12 @@ class Dice:
 		height *=100
 		
 		# New blank image 
-		canvas = Image.new('RGB',(width, height))
+		canvas = Image.new('RGB',(int(width), int(height)))
 		
 		image_index=0
 		
-		for y in xrange(0, height, 100):
-			for x in xrange (0, width, 100):
+		for y in xrange(0, int(height), 100):
+			for x in xrange (0, int(width), 100):
 				if image_index < len(image_index):
 					im = Image.open(str(image_arr(image_index)))
 					im.thumbnail((100,100))
