@@ -73,7 +73,7 @@ class Dice:
 		
 		height = 1 # Default height
 		if dice > 5:
-			height = dice/5
+			height = int(dice/5)
 			if dice%5 !=0:
 				height +=1
 		height *=100
