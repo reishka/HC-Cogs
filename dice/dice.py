@@ -81,7 +81,7 @@ class Dice:
 		
 		image_index=0
 		
-		for y in range(0, int(height), 100):
+		for y in range(0, int(height), 50):
 			for x in range(0, int(width), 100):
 				if image_index < len(image_arr):
 					im = Image.open(str(image_arr[image_index]))
