@@ -8,7 +8,7 @@ class Dice:
 
 	def __init__(self, bot):
 		self.bot = bot
-		self.DICE_PATH = 'data/'
+		self.DICE_PATH = 'data/d'
 		self.roll_arr = []			# Array of rolls
 		self.discord_arr =[]			# Array of discord emoji rolls
 		self.image_rolls = []			# Array of image rolls
@@ -92,10 +92,13 @@ class Dice:
 				# for num in discord_total:
 				# 	message += (str(num))   
 				# message += self.discord_dict['sbd'] + ' '
+								
+				# message = "Your rolls: \n"
+				# for roll in self.image_rolls:
+				#	message += str(roll) + ' '
 				
-				message = "Your rolls: \n"
-				for roll in self.image_rolls:
-					message += str(roll) + ' '
+				for dimage in self.image_rolls:
+					await self.bot.sen_file(str(dimage))
 
 				await self.bot.say( message )
 			else:
