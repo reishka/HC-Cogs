@@ -135,6 +135,7 @@ class Dice:
 				#for dimage in self.image_rolls:
 				#	await self.bot.send_file(ctx.message.channel, str(dimage))
 				
+				image_grid(self.image_rolls, int(dice))
 				await self.bot.send_file(ctx.message.channel, 'data/dice/temp.jpg')
 
 				# await self.bot.say( message )
