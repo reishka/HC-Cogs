@@ -1,14 +1,19 @@
 import discord
 from discord.ext import commands
 import random
+from .utils.dataIO import fileIO
+
 
 class Dice:
 	"""A dice roller, for all your dice rolling needs."""
+
+	DICE_PATH = 'data/'
 
 	def __init__(self, bot):
 		self.bot = bot
 		self.roll_arr = []			# Array of rolls
 		self.discord_arr =[]			# Array of discord emoji rolls
+		self.image_rolls = []			# Array of image rolls
 		self.discord_dict ={'0':':zero:',	# Dictionary of discord emoji
 				   '1':':one:',
 				   '2':':two:',
@@ -42,6 +47,17 @@ class Dice:
 
 		return result_arr
 
+	def image_rolls(self, num_array, sides):
+
+		result_arr=[]
+		for roll in num_array:
+			derp=''
+			for d in str(roll):
+				derp += DICE_PATH + sides +"/"+str(d)+".jpg "
+			result_arr.append(derp)
+
+		return result_arr
+
 	@commands.command(pass_context = True)
 	async def droll(self, ctx, dice=4, sides=20):
 		""" Rolls #dx. Default roll is 4d20. Use [p]droll # x """
@@ -60,21 +76,29 @@ class Dice:
 			
 				# Get our dice rolls
 				self.roll_arr = self.roll_dice(int(dice), int(sides))
+
+				# Get our dice images
+				self.image_rolls = self.image_rolls(self.roll_arr, sides)
+
 				# Convert our dice rolls to discord number emoji
-				self.discord_arr = self.discord_emoji(self.roll_arr) 
+				# self.discord_arr = self.discord_emoji(self.roll_arr) 
 				
-				discord_total = self.discord_emoji(list(str(sum(self.roll_arr))))
-				
+				# discord_total = self.discord_emoji(list(str(sum(self.roll_arr))))
+
 				# Text output for rolls
-				message = "You rolled: \n" + self.discord_dict['sod'] + ' '
-				for roll in self.discord_arr:
-					message += (str(roll) + ' ' + self.discord_dict['sod'] + ' ')
-				message += "\n Your sum: \n" + ' ' + self.discord_dict['sbd'] + ' '
+				# message = "You rolled: \n" + self.discord_dict['sod'] + ' '
+				# for roll in self.discord_arr:
+				#	message += (str(roll) + ' ' + self.discord_dict['sod'] + ' ')
+				# message += "\n Your sum: \n" + ' ' + self.discord_dict['sbd'] + ' '
 				
-				for num in discord_total:
-					message += (str(num))   
-				message += self.discord_dict['sbd'] + ' '
+				# for num in discord_total:
+				# 	message += (str(num))   
+				# message += self.discord_dict['sbd'] + ' '
 				
+				message = "Your rolls: \n"
+				for roll in self.image_rolls:
+					message += str(roll) + ' '
+
 				await self.bot.say( message )
 			else:
 				await self.bot.say("Too many dice. You can roll up to 50 dice at a time.")
