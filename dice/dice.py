@@ -62,7 +62,7 @@ class Dice:
 
 		return result_arr
 	
-	def image_grid(self, image_arr, dice)
+	def image_grid(self, image_arr, dice):
 		
 		# Our grid will always be 5 across, 100x100 px each cell.
 		# Height will be determined by number of dice 
@@ -72,7 +72,7 @@ class Dice:
 			width = dice*100
 		
 		height = dice/5
-			if dice/5 != 0
+		if dice/5 != 0:
 			height +=1
 		height *=100
 		
