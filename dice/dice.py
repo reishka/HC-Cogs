@@ -2,6 +2,11 @@ import discord
 from discord.ext import commands
 import random
 from .utils.dataIO import fileIO
+
+
+# Third Party Libraries
+try: 
+
 from .utils.dataIO import dataIO
 from __main__ import send_cmd_help
 
@@ -15,12 +20,22 @@ except ImportError:
 SETTINGS_PATH = 'data/dice/settings.json'	# Where our settings live
 DICE_PATH = 'data/dice/d'			# Prefix for Where our dice live
 
-
 class Dice:
 	"""A dice roller, for all your dice rolling needs."""
 
 	def __init__(self, bot):
 		self.bot = bot
+
+    self.DICE_PATH = 'data/dice/d'			# Where our dice live
+		self.SETTINGS_PATH = 'data/dice/settings.json'	# Where our settings live
+		self.roll_arr = []				# Array of rolls
+		self.image_rolls = []				# Array of image rolls
+		
+		self.settings = fileIO.load_json(self.SETTINGS_PATH)
+		
+		self.default_settings = {"DICE_WIDTH": 7,
+				    	"SUM": "Y"}
+		
 		self.roll_arr = []				# Array of rolls
 		self.image_rolls = []				# Array of image rolls
 		self.de = {'0' : ':zero:',			# Discord Emoji
@@ -38,6 +53,7 @@ class Dice:
 		
 		self.settings = dataIO.load_json(SETTINGS_PATH)
 
+
 	def roll_dice(self, dice, sides):
 
 		result_arr = []
@@ -52,7 +68,11 @@ class Dice:
 		result_arr=[]
 		for roll in num_array:
 			derp=''
+
+			derp += self.DICE_PATH + str(sides) +"/"+str(roll)+".jpg"
+
 			derp += DICE_PATH + str(sides) +"/"+str(roll)+".jpg"
+
 			result_arr.append(derp)
 
 		return result_arr
@@ -60,6 +80,17 @@ class Dice:
 	def image_grid(self, image_arr, dice):
 		
 		# Our grid will be determined by user settings, 100x100 px each cell.
+		# Height will be determined by number of dice 
+		
+		width = int(self.settings["DICE_WIDTH"]) # Default width
+		if dice<5:
+			width = dice*100
+		
+		height = 1 # Default height
+		if dice > 5:
+			height = int(dice/5)
+			if dice%5 !=0:
+
 		# Height will be determined by number of dice
 
 		d_width = int(self.settings["DICE_WIDTH"])
@@ -126,6 +157,12 @@ class Dice:
 			# Get our dice images
 			self.image_rolls = self.dice_rolls(self.roll_arr, int(sides))
 
+
+			# Stick all our dice images into one image 				
+			self.image_grid(self.image_rolls, int(dice))
+			
+			await self.bot.send_file(ctx.message.channel, 'data/dice/temp.jpg')
+
 			# Stick all our dice images into one image
 			self.image_grid(self.image_rolls, int(dice))
 			
@@ -136,10 +173,21 @@ class Dice:
 				message = str(self.dice_sum(self.roll_arr))
 				await self.bot.say("Your Sum: " + message)
 
-
 		else:
 			await self.bot.say("That's not proper dice format! Use [p]droll # x (ie: [p]droll 2 4)")
 
+
+
+def file_check():
+    	
+	if not dataIO.is_valid_json(self.SETTINGS_PATH):
+		print("Creating default settings file...")
+		dataIO.save_json(self.SETTINGS_PATH, self.default_settings)
+
+def setup(bot):
+	if not pillowAvailable:
+		raise RuntimeError("You need to run 'pip3 install Pillow'")
+	else:
 
 	@commands.group(name="dice_set", pass_context=True)
 	async def dice_set(self, ctx):
