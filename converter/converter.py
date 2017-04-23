@@ -32,7 +32,7 @@ class Converter:
     @convert.command(name="f-c", pass_context=False)
     async def f(self, ctx):
         """Convert fahrenheit to celsius"""
-        await self.bot.say(str(ctx) +" in fahrenheit is " + str(float(ctx)-32*.5556) + " celsius.")    
+        await self.bot.say(str(ctx) +" in fahrenheit is " + str((float(ctx)-32)*.5556) + " celsius.")    
              
     @convert.command(name="cm-in", pass_context=False)
     async def cmim(self, ctx):
