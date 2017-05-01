@@ -28,7 +28,7 @@ class Converter:
 
 		if self.is_number(c): 
 			f = c*1.8+32
-			await self.bot.say("{0} commies -> {1} freedoms.", str(c), str(f))
+			await self.bot.say("{0} commies -> {1} freedoms.".format(str(c), str(f)))
 		else:
 			await self.bot.say(self.input_message)
 
