@@ -137,8 +137,8 @@ class Dice:
 			return True
 
 	@commands.command(pass_context = True)
-	async def droll(self, ctx, dice=4, sides=20):
-		""" A dice roller that rolls dice. Default roll is 4d20. Use [p]droll # x
+	async def dice(self, ctx, dice=4, sides=20):
+		""" A dice roller that rolls dice. Default roll is 4d20.
 
 		See [p]dice_set command for more options. """
 
