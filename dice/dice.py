@@ -1,147 +1,247 @@
 import discord
-import pudb
 from discord.ext import commands
+import random
+from .utils.dataIO import fileIO
+from .utils.dataIO import dataIO
 from __main__ import send_cmd_help
 
-class Converter:
+# Third Party Libraries
+try:
+	from PIL import Image
+	pillowAvailable = True
+except ImportError:
+	pillowAvailable = False
 
-    def __init__(self, bot):
-        self.bot = bot
-        self.input_message = "That's not a number!"     # Error message for garbage input
+SETTINGS_PATH = 'data/dice/settings.json'	# Where our settings live
+DICE_PATH = 'data/dice/d'			# Prefix for Where our dice live
 
-    def is_number(self, s):
-        try:
-            float(s)
-            return True
-        except ValueError: 
-            return False
 
-    @commands.group(name="convert", pass_context=True)
-	async def convert(self, ctx):
-        """Convert a multitude of things"""
+class Dice:
+	"""A dice roller, for all your dice rolling needs."""
+
+	def __init__(self, bot):
+		self.bot = bot
+		self.roll_arr = []				# Array of rolls
+		self.image_rolls = []				# Array of image rolls
+		self.de = {'0' : ':zero:',			# Discord Emoji
+				'1' : ':one:',
+				'2' : ':two:',
+				'3' : ':three:',
+				'4' : ':four:',
+				'5' : ':five:',
+				'6' : ':six:',
+				'7' : ':seven:',
+				'8' : ':eight:',
+				'9' : ':nine:',
+				'sod' : ':small_orange_diamond:',
+				'sbd' : ':small_blue_diamond:'}
 		
-        if ctx.invoked_subcommand is None:
-            await send_cmd_help(ctx)
+		self.settings = dataIO.load_json(SETTINGS_PATH)
 
-    @convert.command(name='commies', pass_context=True)
-    async def commies(self, ctx, c: float):
-        """Convert commies to freedoms"""
+	def roll_dice(self, dice, sides):
 
-        if self.is_number(c): 
-            f = c*1.8+32
-            await self.bot.say("{0} commies -> {1} freedoms.", str(c), str(f))
-        else
-            await self.bot.say(self.input_message)
+		result_arr = []
+		for i in range(0, dice):
+			result_arr.append(random.randint(1, sides))
 
-    @convert.command(name="freedoms", pass_context=True)
-    async def freedoms(self, ctx, f: float):
-        """Convert freedoms to commies"""
 
-        if self.is_number(f)
-            c = (f-32)*.5556
-            await self.bot.say("{0} freedoms -> {1} commies.", str(f), str(c))
-        else
-            await self.bot.say(self.input_message)
+		if str.casefold(self.settings["SORT"]) == "on":
+			result_arr.sort()
 
-    @convert.command(name='c-f', pass_context=True)
-    async def c(self, ctx, c: float):
-        """Convert celsius to fahrenheit"""
+		return result_arr
 
-        if self.is_number(c): 
-            f = c*1.8+32
-            await self.bot.say("{0} celsius -> {1} fahrenheit.", str(c), str(f))
-        else
-            await self.bot.say(self.input_message)
+	def dice_rolls(self, num_array, sides):
 
-    @convert.command(name="f-c", pass_context=True)
-    async def f(self, ctx):
-        """Convert fahrenheit to celsius"""
+		result_arr=[]
+		for roll in num_array:
+			derp=''
+			derp += DICE_PATH + str(sides) +"/"+str(roll)+".jpg"
+			result_arr.append(derp)
 
-        if self.is_number(f)
-            c = (f-32)*.5556
-            await self.bot.say("{0} fahrenheit -> {1} celsius.", str(f), str(c))
-        else
-            await self.bot.say(self.input_message)
+		return result_arr
+	
+	def image_grid(self, image_arr, dice):
+		
+		# Our grid will be determined by user settings, 100x100 px each cell.
+		# Height will be determined by number of dice
 
-    @convert.command(name="cm-in", pass_context=True)
-    async def cmim(self, ctx, cm: float):
-        """Convert centimeters to inches"""
+		d_width = int(self.settings["DICE_WIDTH"])
+		
+		width = d_width
+		if dice < d_width:
+			width = dice
+		width = int(width*100) # Turn number of dice into px for canvas
+		
+		height = 1 # Default height
+		if dice > d_width:
+			height = int(dice/d_width)
+			if dice%d_width !=0:
+				height +=1
+		height *=100
+		
+		# New blank image 
+		canvas = Image.new('RGB',(int(width), int(height)))
+		
+		image_index=0
+		
+		for y in range(0, int(height), 100):
+			for x in range(0, int(width), 100):
+				if image_index < len(image_arr):
+					im = Image.open(str(image_arr[image_index]))
+					canvas.paste(im, (x, y))
+					image_index+=1
+		
+		canvas.save('data/dice/temp.jpg', 'JPEG')
 
-        if self.is_number(cm)
-            in = cm/2.54
-            await self.bot.say("{0} centimeters -> {1} inches.", str(cm), str(in))
-        else
-            await self.bot.say(self.input_message)
-        
-    @convert.command(name="cm-ft", pass_context=True)
-    async def cmft(self, ctx, cm: float):
-        """Convert centimeters to feet"""
+	def dice_sum(self, roll_arr):
+		
+		sum = 0
+		for num in roll_arr:
+			sum += num
 
-        if self.is_number(cm)
-            ft = cm*0.032808
-            await self.bot.say("{0} centimeters -> {1} feet.", str(cm), str(ft))
-        else
-            await self.bot.say(self.input_message)
-        
-    @convert.command(name="ft-m", pass_context=True)
-    async def ftm(self, ctx, ft: float):
-        """Convert feet to meters"""
+		derp = self.de['sbd'] + ' ' 
+		for n in str(sum):
+			derp += str(self.de[str(n)])
 
-        if self.is_number(ft)
-            m = ft/3.2808
-            await self.bot.say("{0} feet -> {1} meters.", str(ft), str(m))
-        else
-            await self.bot.say(self.input_message)
+		derp += ' ' + self.de['sbd']
 
-    @convert.command(name="m-ft", pass_context=True)
-    async def mft(self, ctx, m: float):
-        """Convert meters to feet"""
+		
+		return derp
 
-        if self.is_number(m)
-            ft = m/0.3048
-            await self.bot.say("{0} meters -> {1} feet.", str(m), str(ft))
-        else
-            await self.bot.say(self.input_message)
+	def hit_miss(self, roll_arr):
 
-    @convert.command(name="m-y", pass_context=True)
-    async def my(self, ctx, m: float):
-        """Convert meters to yards"""
+		hit = 0
+		miss = 0
 
-        if self.is_number(m)
-            y = m*1.0936
-            await self.bot.say("{0} meters -> {1} yards.", str(m), str(y))
-        else
-            await self.bot.say(self.input_message)
-        
-    @convert.command(name="in-cm", pass_context=True)
-    async def incm(self, ctx, in: float):
-        """Convert inches to centimeters"""
+		for num in roll_arr:
+			if num < self.settings["HIT_THRESHOLD"]:
+				miss += 1
+			else:
+				hit += 1
 
-        if self.is_number(in)
-            f = in*2.54
-            await self.bot.say("{0} inches -> {1} centimeters.", str(in), str(cm))
-        else
-            await self.bot.say(self.input_message)
-        
-    @convert.command(name="lb-kg", pass_context=True)
-    async def lbkg(self, ctx, lb: float):
-        """Convert pounds to kilograms"""
+		m = self.de['sod'] + "Miss : " + str(miss) + " " +  self.de['sod'] + " Hit: " + str(hit) + " " + self.de['sod']
 
-        if self.is_number(lb)
-            kg = lb/0.45359237
-            await self.bot.say("{0} pounds -> {1} kilograms.", str(lb), str(kg))
-        else
-            await self.bot.say(self.input_message)
+		return m
 
-    @convert.command(name="kg-lb", pass_context=True)
-    async def lbkg(self, ctx, kg: float):
-        """Convert kilograms to pounds"""
+	def is_number(self, s):
+		try:
+			int(s)
+			return True
+		except ValueError:
+			return False
 
-        if self.is_number(kg)
-            lb = kg*2.2043
-            await self.bot.say("{0} kilograms -> {1} pounds.", str(kg), str(lb))
-        else
-            await self.bot.say(self.input_message)
-    
-def setup(bot):
-    bot.add_cog(Converter(bot))
+	def is_onoff(self, s):
+		if str.casefold(s) != "on" and str.casefold(s) != "off":
+			return False
+		else:
+			return True
+
+	@commands.command(pass_context = True)
+	async def droll(self, ctx, dice=4, sides=20):
+		""" A dice roller that rolls dice. Default roll is 4d20. Use [p]droll # x
+
+		See [p]dice_set command for more options. """
+
+		if self.is_number(dice) and self.is_number(sides):
+
+			# Get our dice rolls
+			self.roll_arr = self.roll_dice(int(dice), int(sides))
+
+			# Get our dice images
+			self.image_rolls = self.dice_rolls(self.roll_arr, int(sides))
+
+			# Stick all our dice images into one image
+			self.image_grid(self.image_rolls, int(dice))
+			
+			await self.bot.send_file(ctx.message.channel, 'data/dice/temp.jpg')
+
+			# If 'sum' setting is turned on, print the sum
+			if str.casefold(self.settings["SUM"]) == "on":
+				message = str(self.dice_sum(self.roll_arr))
+				await self.bot.say("Your Sum: " + message)
+
+			# If hit/miss tallying setting is turned on, tabulate hit/miss
+			if str.casefold(self.settings["HIT"]) == "on":
+				message = str(self.hit_miss(self.roll_arr))
+				await self.bot.say ("Hit/Miss Threshold: " + str(self.settings["HIT_THRESHOLD"]) + " "  + message)
+
+		else:
+			await self.bot.say("That's not proper dice format! Use [p]droll # x (ie: [p]droll 2 4)")
+
+
+	@commands.group(name="dice_set", pass_context=True)
+	async def dice_set(self, ctx):
+		"""Configure settings used by droll."""
+		if ctx.invoked_subcommand is None:
+			await send_cmd_help(ctx)
+
+	@dice_set.command(name="dice", pass_context=True)
+	async def dice(self, ctx, d: int):
+		"""Set the amount of dice displayed on one line. Between 1 and 20."""
+		if self.is_number(d):
+			if d < 1 or d > 20:
+				await self.bot.say("You can only set a value between 1 and 20")
+			else:
+				self.settings["DICE_WIDTH"] = d
+				dataIO.save_json(SETTINGS_PATH, self.settings)
+				await self.bot.say("Current dice width set to: " + 
+					str(self.settings["DICE_WIDTH"]))
+		else: await self.bot.say("Not a valid amount.")
+
+	@dice_set.command(name="sum", pass_context=True)
+	async def sum(self, ctx, s: str):
+		"""Turn summing the dice on or off"""
+		if not self.is_onoff(s):
+			await self.bot.say ("The only options are 'on' or 'off'. " +
+						"Currently, sums are: " + str(self.settings["SUM"]))
+		else:
+			self.settings["SUM"] = s
+			dataIO.save_json(SETTINGS_PATH, self.settings)
+			await self.bot.say("Sums are now " + str(self.settings["SUM"]))
+
+	@dice_set.command(name="hit_threshold", pass_context=True)
+	async def hit_threshold(self, ctx, h: int):
+		"""Set the threshold for pass/fail hit tally. Number specified is INCLUDED in pass
+		ie: specifying 8 will specify pass for rolls of 8 and above.  """
+
+		if not self.is_number(h):
+			await self.bot.say("Not a valid amount.")
+		else:
+			self.settings["HIT_THRESHOLD"] = h
+			dataIO.save_json(SETTINGS_PATH, self.settings)
+			await self.bot.say("Threshold is now: " + str(self.settings["HIT_THRESHOLD"]))
+
+	@dice_set.command(name="hit", pass_context=True)
+	async def hit(self, ctx, s: str):
+		"""Turn hit/miss tally on or off"""
+		if not self.is_onoff(s):
+			await self.bot.say("The only options are 'on' or 'off'. " +
+						"Currently, hit/miss tallying is " + str(self.settings["HIT"]))
+		else:
+			self.settings["HIT"] = s
+			dataIO.save_json(SETTINGS_PATH, self.settings)
+			await self.bot.say("Hit/Miss tallying is now: " + str(self.settings["HIT"]))
+
+	@dice_set.command(name="sort", pass_context=True)
+	async def sort(self, ctx, s: str):
+		"""Turn dice sorting on or off"""
+
+		if not self.is_onoff(s):
+			await self.bot.say("The only options are 'on' or 'off'. " + 
+						"Currently, sorting is: " + str(self.settings["SORT"]))
+		else:
+			self.settings["SORT"] = s
+			dataIO.save_json(SETTINGS_PATH, self.settings)
+			await self.bot.say("Sorting is now: " + str(self.settings["SORT"]))
+
+def file_check():
+	
+	default_settings = {"DICE_WIDTH": 7,
+				"SUM": "off",
+				"HIT_THRESHOLD": 0,
+				"HIT": "off",
+				"SORT": "off"}
+
+	if not dataIO.is_valid_json(SETTINGS_PATH):
+		print("Creating default settings file...")
+		dataIO.save_json(SETTINGS_PATH, default_settings)
