@@ -53,7 +53,7 @@ class Converter:
 			await self.bot.say(self.input_message)
 
 	@convert.command(name="f-c", pass_context=True)
-	async def f(self, ctx):
+	async def f(self, ctx, f: float):
 		"""Convert fahrenheit to celsius"""
 
 		if self.is_number(f):
