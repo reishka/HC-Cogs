@@ -137,7 +137,7 @@ class Dice:
 			return True
 
 	@commands.command(pass_context = True)
-	async def dice(self, ctx, dice=4, sides=20):
+	async def droll(self, ctx, dice=4, sides=20):
 		""" A dice roller that rolls dice. Default roll is 4d20. Use [p]droll # x
 
 		See [p]dice_set command for more options. """
@@ -252,4 +252,4 @@ def setup(bot):
 		raise RuntimeError("You need to run 'pip3 install Pillow'")
 	else:
 		file_check()
-		bot.add_cog(Diceroller(bot))
+		bot.add_cog(Dice(bot))
