@@ -29,17 +29,17 @@ class Converter:
 		if self.is_number(c): 
 			f = c*1.8+32
 			await self.bot.say("{0} commies -> {1} freedoms.", str(c), str(f))
-		else
+		else:
 			await self.bot.say(self.input_message)
 
 	@convert.command(name="freedoms", pass_context=True)
 	async def freedoms(self, ctx, f: float):
 		"""Convert freedoms to commies"""
 
-		if self.is_number(f)
+		if self.is_number(f):
 			c = (f-32)*.5556
 			await self.bot.say("{0} freedoms -> {1} commies.", str(f), str(c))
-		else
+		else:
 			await self.bot.say(self.input_message)
 
 	@convert.command(name='c-f', pass_context=True)
@@ -49,97 +49,97 @@ class Converter:
 		if self.is_number(c): 
 			f = c*1.8+32
 			await self.bot.say("{0} celsius -> {1} fahrenheit.", str(c), str(f))
-		else
+		else:
 			await self.bot.say(self.input_message)
 
 	@convert.command(name="f-c", pass_context=True)
 	async def f(self, ctx):
 		"""Convert fahrenheit to celsius"""
 
-		if self.is_number(f)
+		if self.is_number(f):
 			c = (f-32)*.5556
 			await self.bot.say("{0} fahrenheit -> {1} celsius.", str(f), str(c))
-		else
+		else:
 			await self.bot.say(self.input_message)
 
 	@convert.command(name="cm-in", pass_context=True)
 	async def cmim(self, ctx, cm: float):
 		"""Convert centimeters to inches"""
 
-		if self.is_number(cm)
+		if self.is_number(cm):
 			in = cm/2.54
 			await self.bot.say("{0} centimeters -> {1} inches.", str(cm), str(in))
-		else
+		else:
 			await self.bot.say(self.input_message)
 		
 	@convert.command(name="cm-ft", pass_context=True)
 	async def cmft(self, ctx, cm: float):
 		"""Convert centimeters to feet"""
 
-		if self.is_number(cm)
+		if self.is_number(cm):
 			ft = cm*0.032808
 			await self.bot.say("{0} centimeters -> {1} feet.", str(cm), str(ft))
-		else
+		else:
 			await self.bot.say(self.input_message)
 		
 	@convert.command(name="ft-m", pass_context=True)
 	async def ftm(self, ctx, ft: float):
 		"""Convert feet to meters"""
 
-		if self.is_number(ft)
+		if self.is_number(ft):
 			m = ft/3.2808
 			await self.bot.say("{0} feet -> {1} meters.", str(ft), str(m))
-		else
+		else:
 			await self.bot.say(self.input_message)
 
 	@convert.command(name="m-ft", pass_context=True)
 	async def mft(self, ctx, m: float):
 		"""Convert meters to feet"""
 
-		if self.is_number(m)
+		if self.is_number(m):
 			ft = m/0.3048
 			await self.bot.say("{0} meters -> {1} feet.", str(m), str(ft))
-		else
+		else:
 			await self.bot.say(self.input_message)
 
 	@convert.command(name="m-y", pass_context=True)
 	async def my(self, ctx, m: float):
 		"""Convert meters to yards"""
 
-		if self.is_number(m)
+		if self.is_number(m):
 			y = m*1.0936
 			await self.bot.say("{0} meters -> {1} yards.", str(m), str(y))
-		else
+		else:
 			await self.bot.say(self.input_message)
 		
 	@convert.command(name="in-cm", pass_context=True)
 	async def incm(self, ctx, in: float):
 		"""Convert inches to centimeters"""
 
-		if self.is_number(in)
+		if self.is_number(in):
 			f = in*2.54
 			await self.bot.say("{0} inches -> {1} centimeters.", str(in), str(cm))
-		else
+		else:
 			await self.bot.say(self.input_message)
 		
 	@convert.command(name="lb-kg", pass_context=True)
 	async def lbkg(self, ctx, lb: float):
 		"""Convert pounds to kilograms"""
 
-		if self.is_number(lb)
+		if self.is_number(lb):
 			kg = lb/0.45359237
 			await self.bot.say("{0} pounds -> {1} kilograms.", str(lb), str(kg))
-		else
+		else:
 			await self.bot.say(self.input_message)
 
 	@convert.command(name="kg-lb", pass_context=True)
 	async def lbkg(self, ctx, kg: float):
 		"""Convert kilograms to pounds"""
 
-		if self.is_number(kg)
+		if self.is_number(kg):
 			lb = kg*2.2043
 			await self.bot.say("{0} kilograms -> {1} pounds.", str(kg), str(lb))
-		else
+		else:
 			await self.bot.say(self.input_message)
 	
 def setup(bot):
