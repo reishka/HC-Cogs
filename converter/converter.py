@@ -23,42 +23,42 @@ class Converter:
 			await send_cmd_help(ctx)
 
 	@convert.command(name='commies', pass_context=True)
-	async def commies(self, ctx, c: float):
+	async def commies(self, ctx, commies: float):
 		"""Convert commies to freedoms"""
 
-		if self.is_number(c): 
-			f = c*1.8+32
-			await self.bot.say("{0} commies :arrow_right: {1} freedoms.".format(str(c), str(f)))
+		if self.is_number(commies): 
+			f = commies*1.8+32
+			await self.bot.say("{0} commies :arrow_right: {1} freedoms.".format(str(commies), str(f)))
 		else:
 			await self.bot.say(self.input_message)
 
 	@convert.command(name="freedoms", pass_context=True)
-	async def freedoms(self, ctx, f: float):
+	async def freedoms(self, ctx, freedoms: float):
 		"""Convert freedoms to commies"""
 
-		if self.is_number(f):
-			c = (f-32)*.5556
-			await self.bot.say("{0} freedoms :arrow_right: {1} commies.".format(str(f), str(c)))
+		if self.is_number(freedoms):
+			c = (freedoms-32)*.5556
+			await self.bot.say("{0} freedoms :arrow_right: {1} commies.".format(str(freedoms), str(c)))
 		else:
 			await self.bot.say(self.input_message)
 
 	@convert.command(name='c-f', pass_context=True)
-	async def c(self, ctx, c: float):
+	async def c(self, ctx, celsius: float):
 		"""Convert celsius to fahrenheit"""
 
-		if self.is_number(c): 
-			f = c*1.8+32
-			await self.bot.say("{0} celsius :arrow_right: {1} fahrenheit.".format(str(c), str(f)))
+		if self.is_number(celsius): 
+			f = celsius*1.8+32
+			await self.bot.say("{0} celsius :arrow_right: {1} fahrenheit.".format(str(celsius), str(f)))
 		else:
 			await self.bot.say(self.input_message)
 
 	@convert.command(name="f-c", pass_context=True)
-	async def f(self, ctx, f: float):
+	async def f(self, ctx, fahrenheit: float):
 		"""Convert fahrenheit to celsius"""
 
-		if self.is_number(f):
-			c = (f-32)*.5556
-			await self.bot.say("{0} fahrenheit :arrow_right: {1} celsius.".format(str(f), str(c)))
+		if self.is_number(fahrenheit):
+			c = (fahrenheit-32)*.5556
+			await self.bot.say("{0} fahrenheit :arrow_right: {1} celsius.".format(str(fahrenheit), str(c)))
 		else:
 			await self.bot.say(self.input_message)
 
@@ -93,32 +93,32 @@ class Converter:
 			await self.bot.say(self.input_message)
 
 	@convert.command(name="m-ft", pass_context=True)
-	async def mft(self, ctx, m: float):
+	async def mft(self, ctx, meters: float):
 		"""Convert meters to feet"""
 
-		if self.is_number(m):
-			ft = m/0.3048
-			await self.bot.say("{0} meters :arrow_right: {1} feet.".format(str(m), str(ft)))
+		if self.is_number(meters):
+			ft = meters/0.3048
+			await self.bot.say("{0} meters :arrow_right: {1} feet.".format(str(meters), str(ft)))
 		else:
 			await self.bot.say(self.input_message)
 
 	@convert.command(name="m-y", pass_context=True)
-	async def my(self, ctx, m: float):
+	async def my(self, ctx, meters: float):
 		"""Convert meters to yards"""
 
-		if self.is_number(m):
-			y = m*1.0936
-			await self.bot.say("{0} meters :arrow_right: {1} yards.".format(str(m), str(y)))
+		if self.is_number(meters):
+			y = meters*1.0936
+			await self.bot.say("{0} meters :arrow_right: {1} yards.".format(str(meters), str(y)))
 		else:
 			await self.bot.say(self.input_message)
 		
 	@convert.command(name="in-cm", pass_context=True)
-	async def incm(self, ctx, i: float):
+	async def incm(self, ctx, inches: float):
 		"""Convert inches to centimeters"""
 
-		if self.is_number(i):
-			cm = i*2.54
-			await self.bot.say("{0} inches :arrow_right: {1} centimeters.".format(str(i), str(cm)))
+		if self.is_number(inches):
+			cm = inches*2.54
+			await self.bot.say("{0} inches :arrow_right: {1} centimeters.".format(str(inches), str(cm)))
 		else:
 			await self.bot.say(self.input_message)
 		
