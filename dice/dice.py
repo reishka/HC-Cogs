@@ -245,3 +245,11 @@ def file_check():
 	if not dataIO.is_valid_json(SETTINGS_PATH):
 		print("Creating default settings file...")
 		dataIO.save_json(SETTINGS_PATH, default_settings)
+
+def setup(bot):
+
+	if not pillowAvailable:
+		raise RuntimeError("You need to run 'pip3 install Pillow'")
+	else:
+		file_check()
+		bot.add_cog(Dice(bot))
