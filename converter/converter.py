@@ -67,8 +67,8 @@ class Converter:
 		"""Convert centimeters to inches"""
 
 		if self.is_number(cm):
-			in = cm/2.54
-			await self.bot.say("{0} centimeters -> {1} inches.", str(cm), str(in))
+			i = cm/2.54
+			await self.bot.say("{0} centimeters -> {1} inches.", str(cm), str(i))
 		else:
 			await self.bot.say(self.input_message)
 		
@@ -113,11 +113,11 @@ class Converter:
 			await self.bot.say(self.input_message)
 		
 	@convert.command(name="in-cm", pass_context=True)
-	async def incm(self, ctx, in: float):
+	async def incm(self, ctx, i: float):
 		"""Convert inches to centimeters"""
 
-		if self.is_number(in):
-			f = in*2.54
+		if self.is_number(i):
+			cm = in*2.54
 			await self.bot.say("{0} inches -> {1} centimeters.", str(in), str(cm))
 		else:
 			await self.bot.say(self.input_message)
