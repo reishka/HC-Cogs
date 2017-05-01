@@ -16,7 +16,7 @@ SETTINGS_PATH = 'data/dice/settings.json'	# Where our settings live
 DICE_PATH = 'data/dice/d'			# Prefix for Where our dice live
 
 
-class Diceroller:
+class Dice:
 	"""A dice roller, for all your dice rolling needs."""
 
 	def __init__(self, bot):
