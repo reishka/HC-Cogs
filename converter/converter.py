@@ -117,8 +117,8 @@ class Converter:
 		"""Convert inches to centimeters"""
 
 		if self.is_number(i):
-			cm = in*2.54
-			await self.bot.say("{0} inches -> {1} centimeters.", str(in), str(cm))
+			cm = i*2.54
+			await self.bot.say("{0} inches -> {1} centimeters.", str(i), str(cm))
 		else:
 			await self.bot.say(self.input_message)
 		
