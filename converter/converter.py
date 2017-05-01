@@ -28,7 +28,7 @@ class Converter:
 
 		if self.is_number(c): 
 			f = c*1.8+32
-			await self.bot.say("{0} commies -> {1} freedoms.".format(str(c), str(f)))
+			await self.bot.say("{0} commies :arrow_right: {1} freedoms.".format(str(c), str(f)))
 		else:
 			await self.bot.say(self.input_message)
 
@@ -38,7 +38,7 @@ class Converter:
 
 		if self.is_number(f):
 			c = (f-32)*.5556
-			await self.bot.say("{0} freedoms -> {1} commies.", str(f), str(c))
+			await self.bot.say("{0} freedoms :arrow_right: {1} commies.".format(str(f), str(c)))
 		else:
 			await self.bot.say(self.input_message)
 
@@ -48,7 +48,7 @@ class Converter:
 
 		if self.is_number(c): 
 			f = c*1.8+32
-			await self.bot.say("{0} celsius -> {1} fahrenheit.", str(c), str(f))
+			await self.bot.say("{0} celsius :arrow_right: {1} fahrenheit.".format(str(c), str(f)))
 		else:
 			await self.bot.say(self.input_message)
 
@@ -58,7 +58,7 @@ class Converter:
 
 		if self.is_number(f):
 			c = (f-32)*.5556
-			await self.bot.say("{0} fahrenheit -> {1} celsius.", str(f), str(c))
+			await self.bot.say("{0} fahrenheit :arrow_right: {1} celsius.".format(str(f), str(c)))
 		else:
 			await self.bot.say(self.input_message)
 
@@ -68,7 +68,7 @@ class Converter:
 
 		if self.is_number(cm):
 			i = cm/2.54
-			await self.bot.say("{0} centimeters -> {1} inches.", str(cm), str(i))
+			await self.bot.say("{0} centimeters :arrow_right: {1} inches.".format(str(cm), str(i)))
 		else:
 			await self.bot.say(self.input_message)
 		
@@ -78,7 +78,7 @@ class Converter:
 
 		if self.is_number(cm):
 			ft = cm*0.032808
-			await self.bot.say("{0} centimeters -> {1} feet.", str(cm), str(ft))
+			await self.bot.say("{0} centimeters :arrow_right: {1} feet.".format(str(cm), str(ft)))
 		else:
 			await self.bot.say(self.input_message)
 		
@@ -88,7 +88,7 @@ class Converter:
 
 		if self.is_number(ft):
 			m = ft/3.2808
-			await self.bot.say("{0} feet -> {1} meters.", str(ft), str(m))
+			await self.bot.say("{0} feet :arrow_right: {1} meters.".format(str(ft), str(m)))
 		else:
 			await self.bot.say(self.input_message)
 
@@ -98,7 +98,7 @@ class Converter:
 
 		if self.is_number(m):
 			ft = m/0.3048
-			await self.bot.say("{0} meters -> {1} feet.", str(m), str(ft))
+			await self.bot.say("{0} meters :arrow_right: {1} feet.".format(str(m), str(ft)))
 		else:
 			await self.bot.say(self.input_message)
 
@@ -108,7 +108,7 @@ class Converter:
 
 		if self.is_number(m):
 			y = m*1.0936
-			await self.bot.say("{0} meters -> {1} yards.", str(m), str(y))
+			await self.bot.say("{0} meters :arrow_right: {1} yards.".format(str(m), str(y)))
 		else:
 			await self.bot.say(self.input_message)
 		
@@ -118,7 +118,7 @@ class Converter:
 
 		if self.is_number(i):
 			cm = i*2.54
-			await self.bot.say("{0} inches -> {1} centimeters.", str(i), str(cm))
+			await self.bot.say("{0} inches :arrow_right: {1} centimeters.".format(str(i), str(cm)))
 		else:
 			await self.bot.say(self.input_message)
 		
@@ -128,7 +128,7 @@ class Converter:
 
 		if self.is_number(lb):
 			kg = lb/0.45359237
-			await self.bot.say("{0} pounds -> {1} kilograms.", str(lb), str(kg))
+			await self.bot.say("{0} pounds :arrow_right: {1} kilograms.".format(str(lb), str(kg)))
 		else:
 			await self.bot.say(self.input_message)
 
@@ -138,7 +138,7 @@ class Converter:
 
 		if self.is_number(kg):
 			lb = kg*2.2043
-			await self.bot.say("{0} kilograms -> {1} pounds.", str(kg), str(lb))
+			await self.bot.say("{0} kilograms :arrow_right: {1} pounds.".format(str(kg), str(lb)))
 		else:
 			await self.bot.say(self.input_message)
 	
