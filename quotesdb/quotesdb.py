@@ -26,7 +26,7 @@ class QuotesDB:
 
 
 	@commands.command(pass_context=True, no_pm=True)
-	async def addquote(self, ctx, username: str, quote: str)
+	async def addquote(self, ctx, username: str, quote: str):
 		"""Adds a new quote"""
 
 		quote_index = self.settings["index"]
