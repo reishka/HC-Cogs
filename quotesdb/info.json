@@ -2,6 +2,6 @@
     "AUTHOR" : "Perth",
     "INSTALL_MSG" : "Quote DB",
     "NAME" : "QuotesDB",
-    "SHORT" : "A database for storing and displaying yoru favourite quotes",
-    "DESCRIPTION" : "A database for storing and displaying yoru favourite quotes"
+    "SHORT" : "A database for storing and displaying your favourite quotes",
+    "DESCRIPTION" : "A database for storing and displaying your favourite quotes"
 }
