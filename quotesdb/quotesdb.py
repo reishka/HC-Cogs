@@ -9,7 +9,7 @@ default_settings = {
 	"quotes": {}
 }
 
-class QuoteDB
+class QuotesDB
 	"""Quote Database. Store and recall your favourite quotes!"""
 
 	def __init__(self, bot):
@@ -70,4 +70,4 @@ def setup(bot):
 		handler.setFormatter(logging.Formatter(
 			'%(asctime)s %(message)s', datefmt="[%d/%m/%Y %H:%M]"))
 		logger.addHandler(handler)
-	bot.add_cog(QuoteDB(bot))
+	bot.add_cog(QuotesDB(bot))
