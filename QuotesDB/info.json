@@ -1,0 +1,7 @@
+{
+    "AUTHOR" : "Perth",
+    "INSTALL_MSG" : "Quote DB",
+    "NAME" : "QuoteDB",
+    "SHORT" : "A database for storing and displaying yoru favourite quotes",
+    "DESCRIPTION" : "A database for storing and displaying yoru favourite quotes"
+}
