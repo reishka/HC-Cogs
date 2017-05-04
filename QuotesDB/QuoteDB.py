@@ -12,29 +12,29 @@ default_settings = {
 class QuoteDB
 	"""Quote Database. Store and recall your favourite quotes!"""
 
-		def __init__(self, bot):
-		self.bot = bot
-		self.quote_db_location = "data/quotedb/quotedb.json"
-		self.quote_db = dataIO.load_json(self.quote_db_location)
+	def __init__(self, bot):
+	self.bot = bot
+	self.quote_db_location = "data/quotedb/quotedb.json"
+	self.quote_db = dataIO.load_json(self.quote_db_location)
 
-		def list_quotes(self) -> List[str]:
-			lquotes = [(int(i), j)
-				for (i, j) in self.quote_db["quotes"].items()]
+	def list_quotes(self) -> List[str]:
+		lquotes = [(int(i), j)
+			for (i, j) in self.quote_db["quotes"].items()]
 
-			lquotes.sort(key=lambda x: x[0])
-			return ["{}. {}".format(k, l) for (k, l) in lquotes]
+		lquotes.sort(key=lambda x: x[0])
+		return ["{}. {}".format(k, l) for (k, l) in lquotes]
 
 
-		@commands.command(pass_context=True, no_pm=True)
-		async def addquote(self, ctx, username: str, quote: str)
-			"""Adds a new quote"""
+	@commands.command(pass_context=True, no_pm=True)
+	async def addquote(self, ctx, username: str, quote: str)
+		"""Adds a new quote"""
 
-			quote_index = self.settings["index"]
-			self.quote_db["quotes"][str(quote_index)] = username + ": " + quote
-			self.quote_db["index"] += 1
-			dataIO.save_json(self.quote_db_location, self.quote_db)
+		quote_index = self.settings["index"]
+		self.quote_db["quotes"][str(quote_index)] = username + ": " + quote
+		self.quote_db["index"] += 1
+		dataIO.save_json(self.quote_db_location, self.quote_db)
 
-			await self.bot.say("Quote number {} has been added!".format(quote_index))
+		await self.bot.say("Quote number {} has been added!".format(quote_index))
 
 
 
