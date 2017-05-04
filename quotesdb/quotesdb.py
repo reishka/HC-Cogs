@@ -13,9 +13,9 @@ class QuotesDB:
 	"""Quote Database. Store and recall your favourite quotes!"""
 
 	def __init__(self, bot):
-	self.bot = bot
-	self.quote_db_location = "data/quotedb/quotedb.json"
-	self.quote_db = dataIO.load_json(self.quote_db_location)
+		self.bot = bot
+		self.quote_db_location = "data/quotedb/quotedb.json"
+		self.quote_db = dataIO.load_json(self.quote_db_location)
 
 	def list_quotes(self) -> List[str]:
 		lquotes = [(int(i), j)
