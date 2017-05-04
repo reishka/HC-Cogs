@@ -9,7 +9,7 @@ default_settings = {
 	"quotes": {}
 }
 
-class QuotesDB
+class QuotesDB:
 	"""Quote Database. Store and recall your favourite quotes!"""
 
 	def __init__(self, bot):
