@@ -1,7 +1,7 @@
 import discord
 import pudb
 import requests
-from .utils.dataIO import fileIO
+import os
 from .utils.dataIO import dataIO
 from discord.ext import commands
 from __main__ import send_cmd_help
@@ -191,7 +191,12 @@ class Converter:
 		"""List of convertable currencies using [p]convert currency command."""
 
 		await self.bot.say(self.valid_currencies)		
-			
+
+def check_folders(): 
+	if not os.path.exists("data/converter/"):
+		print("Creating data/converter folder...")
+		os.makedirs("data/converter")
+	
 def check_files(): 
 	if not dataIO.is_valid_json(UPDATES_PATH):
 		print("Creating default updates file...")
@@ -230,5 +235,6 @@ def check_files():
 	
 	
 def setup(bot):
+	check_folders()
 	check_files()
 	bot.add_cog(Converter(bot))
