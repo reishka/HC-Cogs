@@ -31,22 +31,23 @@ class Converter:
 	def get_exchange_rate(self, amount:float, currency_from:str, currency_to:str):
 		
 		rates_file_path = RATES_PATH + currency_from + RATES_SUFF
+		currency_f = str.upper(currency_from)
 		
-		if self.last_update[currency_from] is not None:
-			update_delta = datetime.now() - self.last_update[currency_from]
+		if self.last_update[currency_f] is not None:
+			update_delta = datetime.now() - self.last_update[currency_f]
 			
 			if update_delta.hours > 24: 
-				rates = get_rates(currency_from)
+				rates = get_rates(currency_f)
 				dataIO.save_json(rates_file_path, rates)
-				self.last_update[currency_from] = datetime.now()
+				self.last_update[currency_f] = datetime.now()
 				dataIO.save_json(UPDATES_PATH, self.last_update)
 			else:
 				rates = dataIO.load_json(rates_file_path)
 				
 		else:
-			rates = get_rates(currency_from)
+			rates = get_rates(currency_f)
 			dataIO.save_json(rates_file_path, rates)
-			self.last_update[currency_from] = datetime.now()
+			self.last_update[currency_f] = datetime.now()
 			dataIO.save_json(UPDATES_PATH, self.last_update)
 				
 		return rates
