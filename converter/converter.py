@@ -1,13 +1,20 @@
 import discord
 import pudb
+import requests
 from discord.ext import commands
 from __main__ import send_cmd_help
+
+UPDATES_PATH = 'data/converter/updates.json'
+RATES_PATH = 'data/converter/rates_' 
+RATES_SUFF = '.json'
 
 class Converter:
 
 	def __init__(self, bot):
 		self.bot = bot
 		self.input_message = "That's not a number!"     # Error message for garbage input
+		self.last_update = dataIO.load_json(UPDATES_PATH)
+		self.valid_currencies = "AUD, BGN, BRL, CAD, CHF, CNY, CZK, DKK, GBP, HKD, HRK, HUF, IDR, ILS, INR, JPY, KRW, MXN, MYR, NOK, NZD, PHP, PLN, RON, RUB, SEK, SGD, THB, TRY, ZAR, EUR"
 
 	def is_number(self, s):
 		try:
@@ -15,6 +22,32 @@ class Converter:
 			return True
 		except ValueError: 
 			return False
+	def get_rates(self, currency_from):
+		payload = {'base':currency_from}
+		return requests.get('http://api.fixer.io/latest', payload)
+		
+	def get_exchange_rate(self, amount:float, currency_from:str, currency_to:str):
+		
+		rates_file_path = RATES_PATH + currency_from + RATES_SUFF
+		
+		if self.last_update[currency_from] is not None:
+			update_delta = datetime.now() - self.last_update[currency_from]
+			
+			if update_delta.hours > 24: 
+				rates = get_rates(currency_from)
+				dataIO.save_json(rates_file_path, rates)
+				self.last_update[currency_from] = datetime.now()
+				dataIO.save_json(UPDATES_PATH, self.last_update)
+			else:
+				rates = dataIO.load_json(rates_file_path)
+				
+		else:
+			rates = get_rates(currency_from)
+			dataIO.save_json(rates_file_path, rates)
+			self.last_update[currency_from] = datetime.now()
+			dataIO.save_json(UPDATES_PATH, self.last_update)
+				
+		return rates
 
 	@commands.group(name="convert", pass_context=True)
 	async def convert(self, ctx):
@@ -141,6 +174,58 @@ class Converter:
 			await self.bot.say("{0} kilograms :arrow_right: {1} pounds.".format(str(kg), str(lb)))
 		else:
 			await self.bot.say(self.input_message)
+			
+			
+	@convert.command(name="currency", pass_context=True)
+	async def currency(self, ctx, amount: float, currency_from="usd", currency_to="cad"):
+		"""Convert from one currency to another. Defaults USD to CAD. Use [p]currencies to get a list of accepted convertable currencies."""
+		
+		rate = self.get_exchange_rate(amount, currency_from, currency_to)
+		await self.bot.say(str(rate))
+		
+		
+	@convert.command(name="currencies", pass_context=True)
+	async def currencies(self, ctx)
+		"""List of convertable currencies using [p]convert currency command."""
+		
+		await self.bot.say(self.valid_currencies)		
+			
+def check_files(): 
+	if not dataIO.is_valid_json(UPDATES_PATH):
+		print("Creating default updates file...")
+		default_updates = {"AUD":None,
+				"BGN":None, 
+				"BRL":None,
+				"CAD":None,
+				"CHF":None,
+				"CNY":None,
+				"CZK":None,
+				"DKK":None,
+				"GBP":None,
+				"HKD":None,
+				"HRK":None,
+				"HUF":None,
+				"IDR":None,
+				"ILS":None,
+				"INR":None,
+				"JPY":None,
+				"KRW":None,
+				"MXN":None,
+				"MYR":None,
+				"NOK":None,
+				"NZD":None,
+				"PHP":None,
+				"PLN":None,
+				"RON":None,
+				"RUB":None,
+				"SEK":None,
+				"SGD":None,
+				"THB":None,
+				"TRY":None,
+				"ZAR":None,
+				"EUR":None}
+		dataIO.save_json(UPDATES_PATH, default_updates)	
+	
 	
 def setup(bot):
 	bot.add_cog(Converter(bot))
