@@ -187,9 +187,9 @@ class Converter:
 		
 		
 	@convert.command(name="currencies", pass_context=True)
-	async def currencies(self, ctx)
+	async def currencies(self, ctx):
 		"""List of convertable currencies using [p]convert currency command."""
-		
+
 		await self.bot.say(self.valid_currencies)		
 			
 def check_files(): 
@@ -230,4 +230,5 @@ def check_files():
 	
 	
 def setup(bot):
+	check_files()
 	bot.add_cog(Converter(bot))
