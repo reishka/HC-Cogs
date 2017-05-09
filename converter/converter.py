@@ -230,6 +230,7 @@ def check_files():
 				"THB":None,
 				"TRY":None,
 				"ZAR":None,
+				"USD":None,
 				"EUR":None}
 		dataIO.save_json(UPDATES_PATH, default_updates)	
 	
