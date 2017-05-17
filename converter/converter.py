@@ -3,13 +3,15 @@ import pudb
 import requests
 import os
 import json
+from decimal import *
 from datetime import datetime
 from .utils.dataIO import dataIO
 from discord.ext import commands
 from __main__ import send_cmd_help
 
 UPDATES_PATH = 'data/converter/updates.json'
-RATES_PATH = 'data/converter/rates_' 
+CURRENCIES_PATH = 'data/converter/currencies.json'
+RATES_PATH = 'data/converter/rates_'
 RATES_SUFF = '.json'
 
 class Converter:
@@ -18,11 +20,13 @@ class Converter:
 		self.bot = bot
 		self.input_message = "That's not a number!"     # Error message for garbage input
 		self.last_update = dataIO.load_json(UPDATES_PATH)
+		self.currencies = dataIO.load_json(CURRENCIES_PATH)
+
 		self.valid_currencies = ['AUD','BGN', 'BRL', 'CAD', 'CHF', 'CNY', 'CZK', 'DKK', 'GBP', 'HKD', 'HRK', 'HUF', 'IDR', 'ILS', 'INR', 'JPY', 'KRW', 'MXN', 'MYR', 'NOK', 'NZD', 'PHP', 'PLN', 'RON', 'RUB', 'SEK', 'SGD', 'THB', 'TRY', 'USD', 'ZAR', 'EUR']
 
 	def is_number(self, s):
 		try:
-			float(s)
+			Decimal(s)
 			return True
 		except ValueError:
 			return False
@@ -32,7 +36,7 @@ class Converter:
 		rates = requests.get('http://api.fixer.io/latest', payload).json()
 		return rates
 
-	def get_exchange_rate(self, amount:float, currency_from:str, currency_to:str):
+	def get_exchange_rate(self, amount:Decimal, currency_from:str, currency_to:str):
 
 		rates_file_path = RATES_PATH + currency_from + RATES_SUFF
 		currency_f = str.upper(currency_from)
@@ -55,6 +59,34 @@ class Converter:
 			dataIO.save_json(UPDATES_PATH, self.last_update)
 
 		return rates['rates'][str.upper(currency_to)]
+
+	def formatter(self, amount:Decimal, currency_to:str)
+
+		symbol = self.currencies[str.upper(currency_to)]["symbol"]
+		spacer = self.currencies[str.upper(currency_to)]["sep_1"]
+		decpt = self.currencies[str.upper(currency_to)]["sep_2"]
+		minor = self.currencies[str.upper(currency_to)]["minor"]
+		quant = Decimal(10) ** -minor
+		sign, digits, exp = currency_to.quantize(quant).as_tuple()
+		result = []
+
+		digits = map(str, digits)
+		build, next = result.append, digits.pop
+
+		for i in range(currency_to):
+			build(next() if minor is not '0'  else '0')
+		build(decpt)
+		if not digits:
+			build('0')
+		i = 0
+		while digits:
+			build(next())
+			i += 1
+			if i == 3 and digits:
+				i = 0
+				build(spacer)
+		build(symbol)
+		return ''.join(reversed(result))
 
 	@commands.group(name="convert", pass_context=True)
 	async def convert(self, ctx):
@@ -111,7 +143,7 @@ class Converter:
 			await self.bot.say("{0} centimeters :arrow_right: {1} inches.".format(str(cm), str(i)))
 		else:
 			await self.bot.say(self.input_message)
-		
+
 	@convert.command(name="cm-ft", pass_context=True)
 	async def cmft(self, ctx, cm: float):
 		"""Convert centimeters to feet"""
@@ -121,7 +153,7 @@ class Converter:
 			await self.bot.say("{0} centimeters :arrow_right: {1} feet.".format(str(cm), str(ft)))
 		else:
 			await self.bot.say(self.input_message)
-		
+
 	@convert.command(name="ft-m", pass_context=True)
 	async def ftm(self, ctx, ft: float):
 		"""Convert feet to meters"""
@@ -151,7 +183,7 @@ class Converter:
 			await self.bot.say("{0} meters :arrow_right: {1} yards.".format(str(meters), str(y)))
 		else:
 			await self.bot.say(self.input_message)
-		
+
 	@convert.command(name="in-cm", pass_context=True)
 	async def incm(self, ctx, inches: float):
 		"""Convert inches to centimeters"""
@@ -184,14 +216,15 @@ class Converter:
 
 
 	@convert.command(name="currency", pass_context=True)
-	async def currency(self, ctx, amount: float, currency_from="usd", currency_to="cad"):
+	async def currency(self, ctx, amount: Decimal, currency_from="usd", currency_to="cad"):
 		"""Convert from one currency to another. Defaults USD to CAD. Use '[p]convert currencies' to get a list of accepted convertable currencies."""
 
 		if (str.upper(currency_from) in self.valid_currencies) and (str.upper(currency_to) in self.valid_currencies):
 
 			rate = self.get_exchange_rate(amount, currency_from, currency_to)
-			conversion = amount * rate
-			await self.bot.say(str(conversion))
+			Decimal(conversion = amount * rate)
+
+			await self.bot.say(str(formatter(conversion)))
 		else:
 			await self.bot.say("Those might not be currencies.")
 
@@ -201,16 +234,16 @@ class Converter:
 
 		await self.bot.say(" ".join(self.valid_currencies))
 
-def check_folders(): 
+def check_folders():
 	if not os.path.exists("data/converter/"):
 		print("Creating data/converter folder...")
 		os.makedirs("data/converter")
-	
-def check_files(): 
+
+def check_files():
 	if not dataIO.is_valid_json(UPDATES_PATH):
 		print("Creating default updates file...")
 		default_updates = {"AUD":None,
-				"BGN":None, 
+				"BGN":None,
 				"BRL":None,
 				"CAD":None,
 				"CHF":None,
@@ -243,8 +276,52 @@ def check_files():
 				"EUR":None}
 		dataIO.save_json(UPDATES_PATH, default_updates)	
 	
-	
+	if not dataIO.is_valid_json(CURRENCIES_PATH):
+		print("Creating default currencies file...")
+		space = " "
+		dot = '.'
+		quote = "'"
+		comma = ','
+		default_countries = { "countries":[
+		{"AUD": 'symbol':'$', 	'sep_1':space, 	'sep_2':comma, 	'minor':'2'},
+		{"BGN": 'symbol':'лв', 	'sep_1':comma, 	'sep_2':dot, 	'minor':'2'},  //Not sure on this one
+		{"BRL": 'symbol':'R$', 	'sep_1':dot, 	'sep_2':comma, 	'minor':'2'},
+		{"CAD": 'symbol':'$', 	'sep_1':comma, 	'sep_2':dot, 	'minor':'2'},
+		{"CHF": 'symbol':'CHF', 'sep_1':quote, 	'sep_2':dot, 	'minor':'2'},
+		{"CNY": 'symbol':'¥', 	'sep_1':comma, 	'sep_2':dot, 	'minor':'2'},
+		{"CZK": 'symbol':'Kč', 	'sep_1':dot, 	'sep_2':comma, 	'minor':'2'},
+		{"DKK": 'symbol':'kr', 	'sep_1':dot, 	'sep_2':comma, 	'minor':'2'},
+		{"EUR": 'symbol':'€', 	'sep_1':comma, 	'sep_2':dot, 	'minor':'2'},
+		{"GBP": 'symbol':'£', 	'sep_1':comma, 	'sep_2':dot, 	'minor':'2'},
+		{"HKD": 'symbol':'$', 	'sep_1':comma, 	'sep_2':dot, 	'minor':'2'},
+		{"HRK": 'symbol':'kn', 	'sep_1':dot, 	'sep_2':comma, 	'minor':'2'},
+		{"HUF": 'symbol':'Ft', 	'sep_1':dot, 	'sep_2':comma, 	'minor':'0'},
+		{"IDR": 'symbol':'Rp', 	'sep_1':dot, 	'sep_2':comma, 	'minor':'2'},
+		{"ILS": 'symbol':'₪', 	'sep_1':comma, 	'sep_2':dot, 	'minor':'2'},
+		{"INR": 'symbol':'₹', 	'sep_1':comma, 	'sep_2':dot, 	'minor':'2'},
+		{"JPY": 'symbol':'¥', 	'sep_1':comma, 	'sep_2':dot, 	'minor':'0'},
+		{"KRW": 'symbol':'₩', 	'sep_1':comma, 	'sep_2':dot, 	'minor':'0'},
+		{"MXN": 'symbol':'$', 	'sep_1':comma, 	'sep_2':dot, 	'minor':'2'},
+		{"MYR": 'symbol':'RM', 	'sep_1':comma, 	'sep_2':dot, 	'minor':'2'},
+		{"NOK": 'symbol':'kr', 	'sep_1':dot, 	'sep_2':comma, 	'minor':'2'},
+		{"NZD": 'symbol':'$', 	'sep_1':comma, 	'sep_2':dot, 	'minor':'2'},
+		{"PHP": 'symbol':'₱', 	'sep_1':comma, 	'sep_2':dot, 	'minor':'2'},
+		{"PLN": 'symbol':'zł', 	'sep_1':space, 	'sep_2':comma, 	'minor':'2'},
+		{"RON": 'symbol':'lei', 'sep_1':dot, 	'sep_2':comma, 	'minor':'2'},
+		{"RUB": 'symbol':'₽', 	'sep_1':dot, 	'sep_2':comma, 	'minor':'2'},
+		{"SEK": 'symbol':'kr', 	'sep_1':space, 	'sep_2':comma, 	'minor':'2'},
+		{"SGD": 'symbol':'$', 	'sep_1':comma, 	'sep_2':dot, 	'minor':'2'},
+		{"THB": 'symbol':'฿', 	'sep_1':comma, 	'sep_2':dot, 	'minor':'2'},
+		{"TRY": 'symbol':'‎₺', 	'sep_1':comma, 	'sep_2':dot, 	'minor':'2'},
+		{"USD": 'symbol':'$', 	'sep_1':comma, 	'sep_2':dot, 	'minor':'2'},
+		{"ZAR": 'symbol':'R', 	'sep_1':space, 	'sep_2':dot, 	'minor':'2'}]}
+
+		data_IO.save_json(CURRENCIES_PATH, default_countries)
+
 def setup(bot):
-	check_folders()
-	check_files()
-	bot.add_cog(Converter(bot))
+	if not babelAvailable:
+		raise RuntimeError("You need to run 'pip3 install Babel'")
+	else:
+		check_folders()
+		check_files()
+		bot.add_cog(Converter(bot))
